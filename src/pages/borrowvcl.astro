@@ -1,0 +1,24 @@
+---
+import Header from '../components/common/Header.astro';
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/common/Footer.astro';
+import FooterMobile from "../components/common/FooterMobile.astro";
+import TopBanner from '@/components/BorrowVCL/pagebanner.astro';
+import VCLTabs from '@/components/BorrowVCL/VCLTabs.astro';
+import ContactButton from '../components/common/HomeGetInTouch.jsx';
+
+---
+<Layout>
+<ContactButton label={"Start Your Financing Conversation"} href={"/contact-us?segment=borrow#leadgen"} width={"400"} client:load />
+<Header />
+<TopBanner/>
+<VCLTabs/>
+<Footer />
+<FooterMobile/>
+</Layout>
+
+<style>
+    .getintouch-fix{
+        width: 330px!important;
+    }
+</style>

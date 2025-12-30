@@ -85,7 +85,7 @@ export default function TechSwiper({ slides }) {
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
             <div className="w-full">
-              <div className="w-full relative aspect-97/120 overflow-hidden bg-gradient-to-b from-[#0f172a] to-[#1e293b]">
+              <div className="w-full beyond_cap image-flash-container relative aspect-97/120 overflow-hidden bg-gradient-to-b from-[#0f172a] to-[#1e293b]">
                 <img
                   src={slide.img}
                   alt={slide.title}

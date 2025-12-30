@@ -1,0 +1,18 @@
+---
+import Header from '../components/common/Header.astro';
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/common/Footer.astro';
+import FooterMobile from "../components/common/FooterMobile.astro";
+import TopBanner from '@/components/BorrowVAM/pagebanner.astro';
+import VCLTabs from '@/components/BorrowVAM/VCLTabs.astro';
+import ContactButton from '../components/common/HomeGetInTouch.jsx';
+
+---
+<Layout>
+    <ContactButton label={"Let’s Discuss Your Capital"} href={"/contact-us?segment=borrow#leadgen"} />
+<Header />
+<TopBanner/>
+<VCLTabs/>
+<Footer />
+<FooterMobile/>
+</Layout>

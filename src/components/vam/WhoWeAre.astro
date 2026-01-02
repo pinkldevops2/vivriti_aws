@@ -12,6 +12,9 @@ const newsQuery = `{
       slug
       content
       date
+        news {
+        link
+            }
       featuredImage { node { sourceUrl } }
       newsCategories { nodes { id name slug } }
     }
@@ -27,7 +30,11 @@ try {
     body: JSON.stringify({ query: newsQuery }),
   });
   const data = await res.json();
-  latestNews = data.data.news.nodes;
+  latestNews = data.data.news.nodes.filter(item =>
+      item.newsCategories?.nodes?.some(
+        cat => cat.slug === "media-release"
+      )
+    );
 } catch (err) {
   console.error("Failed to fetch news:", err);
 }

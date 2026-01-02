@@ -12,6 +12,9 @@ const newsQuery = `{
       slug
       content
       date
+        news {
+        link
+            }
       featuredImage { node { sourceUrl } }
       newsCategories { nodes { id name slug } }
     }
@@ -27,7 +30,12 @@ try {
     body: JSON.stringify({ query: newsQuery }),
   });
   const data = await res.json();
-  latestNews = data.data.news.nodes;
+  latestNews = data.data.news.nodes.filter(item =>
+      item.newsCategories?.nodes?.some(
+        cat => cat.slug === "media-release"
+      )
+    )
+   ;
 } catch (err) {
   console.error("Failed to fetch news:", err);
 }
@@ -37,7 +45,9 @@ try {
 
 
 latestNews = latestNews.slice(0, 1); 
+
 ---
+
 <div class="bg-white w-full md:pt-[70px]">
 <div class="container mx-auto">
   <div class="flex flex-wrap xl:pr-[10px] xl:pl-[15px]">
@@ -53,6 +63,9 @@ latestNews = latestNews.slice(0, 1);
     
         <div class="md:w-2/3 blog_banner order-2 md:order-1">
         {latestNews.map(post => <BlogCard post={post} />)}
+
+
+
         </div>
 
        </div>

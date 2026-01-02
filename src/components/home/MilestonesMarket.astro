@@ -7,18 +7,32 @@ import LogoShape from "../../../public/Vivrithi_logo.svg";
 import { GRAPHQL } from "../../config/graphql.js";
 
 const newsQuery = `{
-  news(first: 4) {
+news(first: 7) {
     nodes {
       id
       title
       slug
       content
       date
-      featuredImage { node { sourceUrl } }
-      newsCategories { nodes { id name slug } }
+      news {
+        link
+      }
+      featuredImage {
+        node {
+          sourceUrl
+        }
+      }
+      newsCategories {
+        nodes {
+          id
+          name
+          slug
+        }
+      }
     }
   }
 }`;
+
 
 let latestNews = [];
 
@@ -29,12 +43,20 @@ try {
     body: JSON.stringify({ query: newsQuery }),
   });
   const data = await res.json();
-  latestNews = data.data.news.nodes;
+ // latestNews = data.data.news.nodes;
+  latestNews = data.data.news.nodes
+    .filter(item =>
+      item.newsCategories?.nodes?.some(
+        cat => cat.slug === "media-release"
+      )
+    )
+   
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
 } catch (err) {
   console.error("Failed to fetch news:", err);
 }
 
-latestNews.sort((a, b) => new Date(b.date) - new Date(a.date));
+//latestNews.sort((a, b) => new Date(b.date) - new Date(a.date));
 
 function getReadingTime(htmlContent) {
   if (!htmlContent) return "1 min read";
@@ -63,15 +85,22 @@ from milestones to<br/>market moves
     <div class="w-full flex md:w-1/2 ">
    
 
-
  
 <div class="slider-container milestones">
   <div class="slick-slider">
     {latestNews.map((post) => {
       const readTime = getReadingTime(post.content);
+        const hasCustomLink = !!post.news?.link;
+      const newsUrl = hasCustomLink ? post.news.link : `/news/${post.slug}`;
+
       return (
         <div class="slide" key={post.id}>
-          <a href={`/news/${post.slug}`}>
+          <a
+  href={newsUrl}
+  {...(hasCustomLink
+    ? { target: "_blank", rel: "noopener noreferrer" }
+    : {})}
+>
           <img src={post.featuredImage?.node?.sourceUrl || "/blo_thumb.png"} alt={post.title} />
           <div class="overlay">
             <span class="uppercase text-[18px]">{post.newsCategories?.nodes?.[0]?.name || "Uncategorized"}</span>

@@ -19,19 +19,25 @@ function getReadingTime(htmlContent) {
   return `${minutes} min read`;
 }
 
-const newsQuery = `{
+ const newsQuery = `{
   news(first: 1000) {
     nodes {
-      id
+       id
       title
-      slug
-      content
+       slug
+       content
       date
-      featuredImage { node { sourceUrl } }
+        news {
+        link
+            }
+       featuredImage { node { sourceUrl } }
       newsCategories { nodes { id name slug } }
-    }
-  }
-}`;
+     }
+   }
+ }`;
+
+
+
 
 let latestNews = [];
 
@@ -42,7 +48,14 @@ try {
     body: JSON.stringify({ query: newsQuery }),
   });
   const data = await res.json();
-  latestNews = data.data.news.nodes;
+ // latestNews = data.data.news.nodes;
+ latestNews = data.data.news.nodes.filter(item =>
+    item.newsCategories?.nodes?.some(
+      cat => cat.slug === "media-release"
+    )
+  );
+
+  
 } catch (err) {
   console.error("Failed to fetch news:", err);
 }
@@ -55,18 +68,23 @@ latestNews = latestNews.slice(0, 1);
  
 ---
 
-<div class="container mx-auto md:py-[80px] py-[40px] px-4 lg:px-8 xl:px-4">
+<div class="container mx-auto md:pt-[20px] pt-[20px] md:pb-[40px] pb-[40px] px-4 lg:px-8 xl:px-4">
   <div class="flex flex-wrap">
    
     <div class="w-full hidden  md:w-1/2 md:flex flex-col md:flex-row items-end">
      <div class="md:w-2/3 blog_banner order-2 md:order-1">
  {latestNews.map((post) => {
   const readTime = getReadingTime(post.content);
-
+      const hasCustomLink = !!post.news?.link;
+      const newsUrl = hasCustomLink ? post.news.link : `/news/${post.slug}`;
   return (
     <div data-reveal class="fade-up blog_card flex gap-4" key={post.id}>
       <div class="blog_image w-[120px] shrink-0">
-        <a href={`/news/${post.slug}`}>
+      <a
+        href={newsUrl}
+        target={hasCustomLink ? "_blank" : undefined}
+        rel={hasCustomLink ? "noopener noreferrer" : undefined}
+      > 
         <img
           src={post.featuredImage?.node?.sourceUrl || "/blo_thumb.png"}
           class="w-full  object-cover min-h-[150px]"
@@ -75,7 +93,11 @@ latestNews = latestNews.slice(0, 1);
         </a>
       </div>
       <div class="blog_body flex flex-col items-start justify-center pr-6">
-        <a href={`/news/${post.slug}`}>
+        <a
+        href={newsUrl}
+        target={hasCustomLink ? "_blank" : undefined}
+        rel={hasCustomLink ? "noopener noreferrer" : undefined}
+      >
         <h4>Quick Read</h4>
         <span class="small text-sm gradient-text">
           {post.newsCategories?.[0]?.nodes?.[0]?.name || "Report"} | {readTime}

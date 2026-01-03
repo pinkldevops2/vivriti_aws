@@ -3,7 +3,7 @@ name: QA-SonarQube Scan
 on:
   pull_request:
     branches:
-      - staging
+      - development
     types:
       - opened
       - reopened

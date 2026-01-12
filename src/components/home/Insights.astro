@@ -1,7 +1,7 @@
 ---
 import LogoShape from "../../../public/Vivrithi_logo.svg";
 import { GRAPHQL } from "../../config/graphql.js";
-
+const { nonce } = Astro.locals;
 let blogPosts = [];
 
 const blogQuery = `{
@@ -176,7 +176,7 @@ const link = pdfUrl ? pdfUrl : detailUrl;
     </div>
   </div>
 </div>
-<style>
+<style nonce={nonce}>
   .contact_cta2 {
     padding: 10px 30px;
     display: flex;

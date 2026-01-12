@@ -579,6 +579,23 @@ button{
     background: #3BBAE2;
     background: linear-gradient(32deg, rgba(59, 186, 226, 1) 0%, rgba(0, 1, 138, 1) 100%);
 }
+
+
+.list_of_files li{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+ 
+.list_of_files li a.contact_cta {
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    display: flex;
+    font-size: 14px;
+    padding: 5px 35px;
+}
 @media (max-width: 991px) {
   h2 br{
     display: none;
@@ -627,6 +644,25 @@ button{
       }
     }
    @media (max-width: 650px) {
+.list_of_files li{
+  
+    flex-direction: column;
+    align-items: start;
+    gap: 20px;
+}
+.list_of_files{
+	max-width:100%;
+}
+.list_of_files li a.contact_cta {
+    justify-content: start;
+    align-items: start;
+    margin-bottom: 20px;
+    display: flex;
+    font-size: 14px;
+    padding: 5px 35px;
+}
+
+
   /*Change*/
   .image-wrapper {
     width: 100%;
@@ -835,15 +871,22 @@ button{
 }
 
 /* Screen placement inside laptop */
-.laptop-screen {
+/* .laptop-screen {
   position: absolute;
   top: 11%;
   left: 12%;
   width:76%;
   height: 70%;
   overflow: hidden;
+} */
+.laptop-screen {
+    width: 76.8%;
+    height: 75%;
+    position: absolute;
+    top: 7.2%;
+    left: 11.5%;
+    overflow: hidden;
 }
-
 .laptop-swiper,
 .slide-image {
   width: 100%;
@@ -864,3 +907,9 @@ button.techtabs-btn:not(.tabactive) {
 .blog_details p{
   margin-bottom: 17px;
 }
+.laptop-screen .swiper-slide img{
+width:395px;
+height:248px;
+object-fit:cover;
+}
+ 

@@ -1,6 +1,7 @@
 ---
 import MarkedShape from '../../../public/MarkedShape.svg';
 import LogoAnimation from "../../components/common/logoglow.astro";
+const { nonce } = Astro.locals;
 ---
 <div class="bg-white pt-8 sm:pt-0">
     <div class="container mx-auto  px-4 lg:px-8 xl:px-4">
@@ -54,7 +55,7 @@ import LogoAnimation from "../../components/common/logoglow.astro";
   </div>
 </div>
 </div>
-<style>
+<style nonce={nonce}>
 .border_full_side{
     border: dashed 1px #F58220;
 }
@@ -93,7 +94,7 @@ import LogoAnimation from "../../components/common/logoglow.astro";
     }
 </style>
 
-<script>
+<script nonce={nonce}>
   document.addEventListener("DOMContentLoaded", () => {
     const bars = document.querySelectorAll(".bar");
 

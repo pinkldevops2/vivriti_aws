@@ -3,6 +3,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import $ from 'jquery';
 import 'slick-carousel';
+const { nonce } = Astro.locals;
 ---
 
 <div class="testimonial-container" >
@@ -65,7 +66,7 @@ import 'slick-carousel';
   </div>
 </div>
 
-<script>
+<script nonce={nonce}>
   import $ from 'jquery';
   import 'slick-carousel';
 if (typeof window !== "undefined") {
@@ -98,7 +99,7 @@ if (typeof window !== "undefined") {
 }
 </script>
 
-<style>
+<style nonce={nonce}>
 .testimonial-container {
   max-width: 1000px;
   margin: 60px auto;

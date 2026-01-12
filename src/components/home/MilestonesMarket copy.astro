@@ -2,6 +2,7 @@
 // Import Slick and jQuery
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+const { nonce } = Astro.locals;
 ---
 <div class="bg-white w-full xl:px-0 md:px-[40px] md:py-[70px] py-[40px] px-[20px]">
   <div data-reveal class="fade-up container mx-auto">
@@ -70,7 +71,7 @@ from milestones to<br/>market moves
   </div>
 </div>
 </div>
-<script>
+<script nonce={nonce}>
   import $ from "jquery";
   import "slick-carousel";
 
@@ -115,7 +116,7 @@ from milestones to<br/>market moves
   });
 </script>
 
-<style>
+<style nonce={nonce}>
 .contact_cta2{
     padding: 10px 30px;
     display: flex;

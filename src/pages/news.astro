@@ -1,0 +1,542 @@
+---
+import Header from '../components/common/Header.astro';
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/common/Footer.astro';
+import FooterMobile from "../components/common/FooterMobile.astro";
+import Transforming from '@/components/news/pagebanner.astro';
+import Spotlight1 from '@/components/news/Spotlight1.astro';
+import ContactButton from '../components/common/HomeGetInTouch.jsx';
+---
+
+<Layout>
+  <ContactButton label={"Share Your Media Query"} href={"/contact-us#leadgen"} />
+  <Header />
+  <Transforming />
+  <Spotlight1 />
+
+  <!-- NEWS SECTION -->
+  <!-- <div class="w-full md:w-8/12 mx-auto mt-10"> -->
+
+    <!-- Search -->
+    <!-- <div class="mb-6">
+      <input
+        id="searchInput"
+        type="text"
+        placeholder="Search..."
+        class="bg-[#F8F7F3] w-full px-4 py-3 border border-gray-300"
+      />
+    </div> -->
+
+    <!-- News container -->
+    <!-- <div
+      id="news-container"
+      class="grid grid-cols-1 sm:grid-cols-2 gap-6"
+    >
+      <p class="text-gray-500">Loading news...</p>
+    </div> -->
+
+    <!-- Pagination -->
+    <div id="pagination" class="flex justify-center gap-4 mt-6"></div>
+
+
+
+  <Footer />
+  <FooterMobile/>
+</Layout>
+
+<script type="module">
+document.addEventListener("DOMContentLoaded", () => {
+  const topNewsContainer = document.getElementById("topNewsList");
+  const searchInput = document.getElementById("searchInput");
+  const container = document.getElementById("news-container"); // optional
+  const paginationEl = document.getElementById("pagination"); // optional
+  const categoriesUl = document.getElementById("categoriesUl"); // optional
+
+  let newsData = [];
+  let filteredData = [];
+  let currentPage = 1;
+  const itemsPerPage = 10;
+  
+  let activeCategory = "media-kit";
+
+  // ---------------- UTIL ----------------
+  function formatDate(d) {
+    if (!d) return "";
+    const date = new Date(d);
+    return date.toLocaleDateString("en-US", {
+      weekday: "long",
+      day: "numeric",
+      month: "short",
+    });
+  }
+
+  // ---------------- TOP NEWS ----------------
+  function renderTopNews(news = []) {
+    if (!topNewsContainer) return;
+
+  const mediaReleaseNews = news.filter(item =>
+    item.newsCategories?.nodes?.some(cat => cat.slug === "media-release")
+  );
+
+  
+  const topNews = mediaReleaseNews.slice(0, 3);
+  //  const topNews = news.slice(0, 3); // top 3 news
+    topNewsContainer.innerHTML = topNews
+      .map((item, index) => {
+        const date = formatDate(item.date);
+          const hasCustomLink = !!item.news?.link;
+      const newsUrl = hasCustomLink ? item.news.link : `/news/${item.slug}`;
+       
+        return `
+          <div class="flex gap-5 mb-8 cursor-pointer">
+            <h2 class="text-[28px] md:text-[35px] md:text-4xl font-heading leading-[120%] gradient-text">${index + 1}</h2>
+            <div class="blog_body">
+              <p>  <a href="${newsUrl}" ${hasCustomLink ? 'target="_blank" rel="noopener noreferrer"' : ''}"> ${item.title}</a></p>
+              <span class="blog_date pt-[10px] text-sm flex gap-2 items-center">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6 0C4.40887 0 2.88274 0.632146 1.75707 1.75707C0.632078 2.88261 0 4.40887 0 6C0 7.59113 0.632146 9.11726 1.75707 10.2429C2.88261 11.3679 4.40887 12 6 12C7.59113 12 9.11726 11.3679 10.2429 10.2429C11.3679 9.11739 12 7.59113 12 6C11.9984 4.40942 11.3657 2.88425 10.2407 1.75927C9.11575 0.634286 7.59058 0.00164571 6 0ZM6 11.1429C4.63607 11.1429 3.32791 10.6013 2.36352 9.63648C1.39869 8.6722 0.857143 7.36402 0.857143 6C0.857143 4.63598 1.39875 3.32791 2.36352 2.36352C3.3278 1.39869 4.63598 0.857143 6 0.857143C7.36402 0.857143 8.67209 1.39875 9.63648 2.36352C10.6013 3.3278 11.1429 4.63598 11.1429 6C11.1412 7.36339 10.5991 8.67058 9.63483 9.63483C8.67056 10.5991 7.36347 11.1412 6 11.1429ZM6.42857 2.14286V5.6448C6.42964 5.98605 6.29411 6.31337 6.05196 6.55391L4.16035 8.44552V8.44605C3.99213 8.60838 3.72481 8.6057 3.55928 8.4407C3.39429 8.27516 3.3916 8.00785 3.55392 7.83963L5.44554 5.94802H5.44607C5.52643 5.86766 5.57143 5.75837 5.57143 5.64481V2.14286C5.57143 1.90607 5.76321 1.71429 6 1.71429C6.23679 1.71429 6.42857 1.90607 6.42857 2.14286Z" fill="#2E2E2E"/>
+                </svg>
+                ${date}
+              </span>
+            </div>
+          </div>
+        `;
+      })
+      .join("");
+  }
+
+  // ---------------- CATEGORIES ----------------
+  // function renderCategories(edges = []) {
+  //   if (!categoriesUl) return;
+
+  //   let html = `<li class="py-2 cursor-pointer px-4 rounded mb-2 ${activeCategory === "all" ? "bg-gradient-to-r" : ""}" data-slug="all">All</li>`;
+  //   edges.forEach(({ node }) => {
+  //     html += `<li class="py-2 cursor-pointer px-4 rounded mb-2 ${activeCategory === node.slug ? "bg-gradient-to-r" : ""}" data-slug="${node.slug}">${node.name}</li>`;
+  //   });
+  //   categoriesUl.innerHTML = html;
+
+  //   categoriesUl.querySelectorAll("li").forEach((li) => {
+  //     li.addEventListener("click", () => {
+  //       const slug = li.dataset.slug;
+  //       activeCategory = slug;
+
+  //       categoriesUl.querySelectorAll("li").forEach((x) => x.classList.remove("bg-gradient-to-r"));
+  //       li.classList.add("bg-gradient-to-r");
+
+  //       filteredData = newsData.filter((n) => {
+  //         if (!slug || slug === "all") return true;
+  //         const cats = (n.newsCategories?.nodes || []).map((c) => c.slug.toLowerCase());
+  //         return cats.includes(slug.toLowerCase());
+  //       });
+
+  //       if (searchInput?.value) {
+  //         const qv = searchInput.value.trim().toLowerCase();
+  //         filteredData = filteredData.filter(
+  //           (n) => (n.title && n.title.toLowerCase().includes(qv)) || (n.content && n.content.toLowerCase().includes(qv))
+  //         );
+  //       }
+
+  //       renderPage(1);
+  //       renderTopNews(filteredData); // optional: filter top news by category
+  //     });
+  //   });
+  // }
+ function renderCategories(edges = []) {
+    if (!categoriesUl) return;
+
+//     let html = `
+//   <li class="py-2 cursor-pointer mb-2 ${activeCategory === "all" ? "bg-gradient-to-r " : ""}" data-slug="all">
+//     <a>All</a>
+//   </li>
+// `;
+
+ let html ='';
+
+edges.forEach(({ node }) => {
+  const isActive = activeCategory === node.slug;
+  html += `
+     <li class="py-2 cursor-pointer mb-2"  data-slug="${node.slug}">
+      <a style="display:block;width:100%;padding:15px;
+          ${
+            isActive
+              ? 'background:linear-gradient(212deg, rgba(59,186,226,1) 0%, rgba(0,1,138,1) 100%); color:#fff;'
+              : 'background:transparent; color:#000;'
+          }">${node.name}</a>
+    </li>
+  `;
+});
+
+    categoriesUl.innerHTML = html;
+
+    categoriesUl.querySelectorAll("li").forEach((li) => {
+      li.addEventListener("click", () => {
+        const slug = li.dataset.slug;
+        activeCategory = slug;
+
+        renderCategories(edges); 
+
+        // categoriesUl.querySelectorAll("li").forEach((x) => x.classList.remove("bg-gradient-to-r"));
+        // li.classList.add("bg-gradient-to-r");
+
+        filteredData = newsData.filter((n) => {
+          if (!slug || slug === "all") return true;
+          const cats = (n.newsCategories?.nodes || []).map((c) => c.slug.toLowerCase());
+          return cats.includes(slug.toLowerCase());
+        });
+
+        if (searchInput?.value) {
+          const qv = searchInput.value.trim().toLowerCase();
+          filteredData = filteredData.filter(
+            (n) => (n.title && n.title.toLowerCase().includes(qv)) || (n.content && n.content.toLowerCase().includes(qv))
+          );
+        }
+
+        renderPage(1);
+        renderTopNews(filteredData); // optional: filter top news by category
+      });
+    });
+  }
+
+  // ---------------- SEARCH ----------------
+  searchInput?.addEventListener("input", () => {
+    const q = searchInput.value.trim().toLowerCase();
+    filteredData = newsData.filter(
+      (n) =>
+        (!q || (n.title && n.title.toLowerCase().includes(q)) || (n.content && n.content.toLowerCase().includes(q))) &&
+        (activeCategory === "all" || !activeCategory || (n.newsCategories?.nodes || []).some((c) => c.slug.toLowerCase() === activeCategory.toLowerCase()))
+    );
+
+    renderPage(1);
+    renderTopNews(filteredData); 
+  });
+
+ 
+
+  function getReadingTime(htmlContent) {
+  if (!htmlContent) return "1 min read";
+
+  const text = htmlContent
+    .replace(/<[^>]*>/g, "") 
+    .trim();
+
+  const words = text.split(/\s+/).length;
+  const wordsPerMinute = 200;
+
+  const minutes = Math.max(1, Math.ceil(words / wordsPerMinute));
+  return `${minutes} min read`;
+}
+
+function renderPage(page) {
+  if (!container) return;
+  currentPage = page;
+
+  const start = (page - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  const list = filteredData.slice(start, end);
+
+  if (!list.length) {
+    container.innerHTML = `<p class="text-gray-500 col-span-2">No results found.</p>`;
+    if (paginationEl) paginationEl.innerHTML = "";
+    return;
+  }
+
+
+   if (activeCategory === "media-kit") {
+       container.className = "grid grid-cols-1 sm:grid-cols-1 gap-6";
+
+    container.innerHTML = ` <h1 class="gradient-text text-[28px] md:text-[35px] font-heading leading-[120%] mb-4">Media Kit</h1><ul class="list_of_files">
+<li><div style="display:flex;align-item:center;gap:10px;"><svg xmlns="http://www.w3.org/2000/svg" width="38" height="34" viewBox="0 0 106 95" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29.2189 58.7612C26.5688 64.4007 25.0938 70.6847 25.0938 77.3164C25.0938 83.4138 26.3459 89.2144 28.61 94.4977C33.1468 83.9057 42.066 76.2648 52.5546 71.2783C51.5255 70.7865 50.4792 70.3285 49.4157 69.8875C42.8635 67.1738 35.8568 63.7901 29.2189 58.7697V58.7612Z" fill="url(#paint0_linear_584_313)"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M105.109 0C105.109 0 74.3896 16.24 52.5547 33.1669C58.4122 37.704 63.6351 42.3004 67.4429 46.6338C70.8991 50.1532 73.7635 54.2493 75.8818 58.7608C89.3464 48.5928 101.327 31.6998 105.101 0H105.109Z" fill="url(#paint1_linear_584_313)"/>
+<path d="M75.8904 58.7608C75.0614 59.3884 75.0614 59.3884 75.8904 58.7608C73.7721 54.2493 70.9076 50.1532 67.4515 46.6423C63.6351 42.3003 58.4208 37.7124 52.5633 33.1669C50.1219 35.0609 50.1219 35.0609 52.5633 33.1669C30.7198 16.24 0 0 0 0C3.77351 31.6913 15.763 48.5843 29.219 58.7608C35.8655 63.7812 42.8636 67.1649 49.4158 69.8787C50.4792 70.3197 51.517 70.7861 52.5547 71.2695C52.5633 71.2695 52.5718 71.2695 52.5804 71.261C52.5718 71.261 52.5633 71.2695 52.5547 71.2779C63.0004 76.239 71.8767 83.829 76.4393 94.3447C76.465 94.4041 76.5508 94.4041 76.5679 94.3447C78.7891 89.1123 80.0155 83.3541 80.0155 77.3245C80.0155 70.6928 78.5318 64.4088 75.8904 58.7693V58.7608Z" fill="url(#paint2_linear_584_313)"/>
+<defs>
+<linearGradient id="paint0_linear_584_313" x1="18.2328" y1="98.9584" x2="46.3383" y2="55.8931" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F58220"/>
+<stop offset="1" stop-color="#F2728C"/>
+</linearGradient>
+<linearGradient id="paint1_linear_584_313" x1="117.468" y1="-12.6698" x2="55.7173" y2="57.9732" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F58220"/>
+<stop offset="1" stop-color="#F2728C"/>
+</linearGradient>
+<linearGradient id="paint2_linear_584_313" x1="-26.2688" y1="-28.7571" x2="94.0919" y2="107.009" gradientUnits="userSpaceOnUse">
+<stop stop-color="#0074BC"/>
+<stop offset="1" stop-color="#44C8F5"/>
+</linearGradient>
+</defs>
+</svg><a  target="_blank" href="https://vivritinextdev.wpenginepowered.com/wp-content/uploads/2025/12/Vineet-recent-photo.jpg" download aria-describedby="wp-block-file--media-e78ffb0d-171a-447b-aef1-d12175828deb">Image of Vineet Sukumar - Founder & MD</a></div>
+<a  target="_blank" href="https://vivritinextdev.wpenginepowered.com/wp-content/uploads/2025/12/Vineet-recent-photo.jpg" class="contact_cta flex items-center gap-2 text-white uppercase pw-2 mb-2" data-astro-cid-qmpwvs2w=""> <span style="min-width: 88px;" data-text="Download" data-astro-cid-qmpwvs2w="">Download</span> <img src="https://vivrithi.vercel.app/Vivrithi_logo.svg" class="w-5 h-5" data-astro-cid-qmpwvs2w=""> </a>
+</li>
+<li><div style="display:flex;align-item:center;gap:10px;"><svg xmlns="http://www.w3.org/2000/svg" width="38" height="34" viewBox="0 0 106 95" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29.2189 58.7612C26.5688 64.4007 25.0938 70.6847 25.0938 77.3164C25.0938 83.4138 26.3459 89.2144 28.61 94.4977C33.1468 83.9057 42.066 76.2648 52.5546 71.2783C51.5255 70.7865 50.4792 70.3285 49.4157 69.8875C42.8635 67.1738 35.8568 63.7901 29.2189 58.7697V58.7612Z" fill="url(#paint0_linear_584_313)"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M105.109 0C105.109 0 74.3896 16.24 52.5547 33.1669C58.4122 37.704 63.6351 42.3004 67.4429 46.6338C70.8991 50.1532 73.7635 54.2493 75.8818 58.7608C89.3464 48.5928 101.327 31.6998 105.101 0H105.109Z" fill="url(#paint1_linear_584_313)"/>
+<path d="M75.8904 58.7608C75.0614 59.3884 75.0614 59.3884 75.8904 58.7608C73.7721 54.2493 70.9076 50.1532 67.4515 46.6423C63.6351 42.3003 58.4208 37.7124 52.5633 33.1669C50.1219 35.0609 50.1219 35.0609 52.5633 33.1669C30.7198 16.24 0 0 0 0C3.77351 31.6913 15.763 48.5843 29.219 58.7608C35.8655 63.7812 42.8636 67.1649 49.4158 69.8787C50.4792 70.3197 51.517 70.7861 52.5547 71.2695C52.5633 71.2695 52.5718 71.2695 52.5804 71.261C52.5718 71.261 52.5633 71.2695 52.5547 71.2779C63.0004 76.239 71.8767 83.829 76.4393 94.3447C76.465 94.4041 76.5508 94.4041 76.5679 94.3447C78.7891 89.1123 80.0155 83.3541 80.0155 77.3245C80.0155 70.6928 78.5318 64.4088 75.8904 58.7693V58.7608Z" fill="url(#paint2_linear_584_313)"/>
+<defs>
+<linearGradient id="paint0_linear_584_313" x1="18.2328" y1="98.9584" x2="46.3383" y2="55.8931" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F58220"/>
+<stop offset="1" stop-color="#F2728C"/>
+</linearGradient>
+<linearGradient id="paint1_linear_584_313" x1="117.468" y1="-12.6698" x2="55.7173" y2="57.9732" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F58220"/>
+<stop offset="1" stop-color="#F2728C"/>
+</linearGradient>
+<linearGradient id="paint2_linear_584_313" x1="-26.2688" y1="-28.7571" x2="94.0919" y2="107.009" gradientUnits="userSpaceOnUse">
+<stop stop-color="#0074BC"/>
+<stop offset="1" stop-color="#44C8F5"/>
+</linearGradient>
+</defs>
+</svg><a target="_blank" href="https://vivritinextdev.wpenginepowered.com/wp-content/uploads/2026/01/Vineet-Sukumar-Profile.docx" download aria-describedby="wp-block-file--media-e78ffb0d-171a-447b-aef1-d12175828deb">Profile of Vineet Sukumar - Founder & MD</a></div>
+<a href="https://vivritinextdev.wpenginepowered.com/wp-content/uploads/2026/01/Vineet-Sukumar-Profile.docx" class="contact_cta flex items-center gap-2 text-white uppercase pw-2 mb-2" data-astro-cid-qmpwvs2w=""> <span style="min-width: 88px;" data-text="Download" data-astro-cid-qmpwvs2w="">Download</span> <img src="https://vivrithi.vercel.app/Vivrithi_logo.svg" class="w-5 h-5" data-astro-cid-qmpwvs2w=""> </a></li>
+<li><div style="display:flex;align-item:center;gap:10px;"><svg xmlns="http://www.w3.org/2000/svg" width="38" height="34" viewBox="0 0 106 95" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29.2189 58.7612C26.5688 64.4007 25.0938 70.6847 25.0938 77.3164C25.0938 83.4138 26.3459 89.2144 28.61 94.4977C33.1468 83.9057 42.066 76.2648 52.5546 71.2783C51.5255 70.7865 50.4792 70.3285 49.4157 69.8875C42.8635 67.1738 35.8568 63.7901 29.2189 58.7697V58.7612Z" fill="url(#paint0_linear_584_313)"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M105.109 0C105.109 0 74.3896 16.24 52.5547 33.1669C58.4122 37.704 63.6351 42.3004 67.4429 46.6338C70.8991 50.1532 73.7635 54.2493 75.8818 58.7608C89.3464 48.5928 101.327 31.6998 105.101 0H105.109Z" fill="url(#paint1_linear_584_313)"/>
+<path d="M75.8904 58.7608C75.0614 59.3884 75.0614 59.3884 75.8904 58.7608C73.7721 54.2493 70.9076 50.1532 67.4515 46.6423C63.6351 42.3003 58.4208 37.7124 52.5633 33.1669C50.1219 35.0609 50.1219 35.0609 52.5633 33.1669C30.7198 16.24 0 0 0 0C3.77351 31.6913 15.763 48.5843 29.219 58.7608C35.8655 63.7812 42.8636 67.1649 49.4158 69.8787C50.4792 70.3197 51.517 70.7861 52.5547 71.2695C52.5633 71.2695 52.5718 71.2695 52.5804 71.261C52.5718 71.261 52.5633 71.2695 52.5547 71.2779C63.0004 76.239 71.8767 83.829 76.4393 94.3447C76.465 94.4041 76.5508 94.4041 76.5679 94.3447C78.7891 89.1123 80.0155 83.3541 80.0155 77.3245C80.0155 70.6928 78.5318 64.4088 75.8904 58.7693V58.7608Z" fill="url(#paint2_linear_584_313)"/>
+<defs>
+<linearGradient id="paint0_linear_584_313" x1="18.2328" y1="98.9584" x2="46.3383" y2="55.8931" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F58220"/>
+<stop offset="1" stop-color="#F2728C"/>
+</linearGradient>
+<linearGradient id="paint1_linear_584_313" x1="117.468" y1="-12.6698" x2="55.7173" y2="57.9732" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F58220"/>
+<stop offset="1" stop-color="#F2728C"/>
+</linearGradient>
+<linearGradient id="paint2_linear_584_313" x1="-26.2688" y1="-28.7571" x2="94.0919" y2="107.009" gradientUnits="userSpaceOnUse">
+<stop stop-color="#0074BC"/>
+<stop offset="1" stop-color="#44C8F5"/>
+</linearGradient>
+</defs>
+</svg><a href="https://vivritinextdev.wpenginepowered.com/wp-content/uploads/2026/01/VNL-Logo.zip" download aria-describedby="wp-block-file--media-e78ffb0d-171a-447b-aef1-d12175828deb">VNL Logo</a></div>
+<a href="https://vivritinextdev.wpenginepowered.com/wp-content/uploads/2026/01/VNL-Logo.zip" class="contact_cta flex items-center gap-2 text-white uppercase pw-2 mb-2" data-astro-cid-qmpwvs2w=""> <span style="min-width: 88px;" data-text="Download" data-astro-cid-qmpwvs2w="">Download</span> <img src="https://vivrithi.vercel.app/Vivrithi_logo.svg" class="w-5 h-5" data-astro-cid-qmpwvs2w=""> </a></li>
+<li><div style="display:flex;align-item:center;gap:10px;"><svg xmlns="http://www.w3.org/2000/svg" width="38" height="34" viewBox="0 0 106 95" fill="none">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29.2189 58.7612C26.5688 64.4007 25.0938 70.6847 25.0938 77.3164C25.0938 83.4138 26.3459 89.2144 28.61 94.4977C33.1468 83.9057 42.066 76.2648 52.5546 71.2783C51.5255 70.7865 50.4792 70.3285 49.4157 69.8875C42.8635 67.1738 35.8568 63.7901 29.2189 58.7697V58.7612Z" fill="url(#paint0_linear_584_313)"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M105.109 0C105.109 0 74.3896 16.24 52.5547 33.1669C58.4122 37.704 63.6351 42.3004 67.4429 46.6338C70.8991 50.1532 73.7635 54.2493 75.8818 58.7608C89.3464 48.5928 101.327 31.6998 105.101 0H105.109Z" fill="url(#paint1_linear_584_313)"/>
+<path d="M75.8904 58.7608C75.0614 59.3884 75.0614 59.3884 75.8904 58.7608C73.7721 54.2493 70.9076 50.1532 67.4515 46.6423C63.6351 42.3003 58.4208 37.7124 52.5633 33.1669C50.1219 35.0609 50.1219 35.0609 52.5633 33.1669C30.7198 16.24 0 0 0 0C3.77351 31.6913 15.763 48.5843 29.219 58.7608C35.8655 63.7812 42.8636 67.1649 49.4158 69.8787C50.4792 70.3197 51.517 70.7861 52.5547 71.2695C52.5633 71.2695 52.5718 71.2695 52.5804 71.261C52.5718 71.261 52.5633 71.2695 52.5547 71.2779C63.0004 76.239 71.8767 83.829 76.4393 94.3447C76.465 94.4041 76.5508 94.4041 76.5679 94.3447C78.7891 89.1123 80.0155 83.3541 80.0155 77.3245C80.0155 70.6928 78.5318 64.4088 75.8904 58.7693V58.7608Z" fill="url(#paint2_linear_584_313)"/>
+<defs>
+<linearGradient id="paint0_linear_584_313" x1="18.2328" y1="98.9584" x2="46.3383" y2="55.8931" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F58220"/>
+<stop offset="1" stop-color="#F2728C"/>
+</linearGradient>
+<linearGradient id="paint1_linear_584_313" x1="117.468" y1="-12.6698" x2="55.7173" y2="57.9732" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F58220"/>
+<stop offset="1" stop-color="#F2728C"/>
+</linearGradient>
+<linearGradient id="paint2_linear_584_313" x1="-26.2688" y1="-28.7571" x2="94.0919" y2="107.009" gradientUnits="userSpaceOnUse">
+<stop stop-color="#0074BC"/>
+<stop offset="1" stop-color="#44C8F5"/>
+</linearGradient>
+</defs>
+</svg><a target="_blank" href="https://vivritinextdev.wpenginepowered.com/wp-content/uploads/2025/12/VNL-Brand-Guidelines.pdf" download aria-describedby="wp-block-file--media-e78ffb0d-171a-447b-aef1-d12175828deb">VNL Brand Guidelines</a></div>
+<a  target="_blank" href="https://vivritinextdev.wpenginepowered.com/wp-content/uploads/2025/12/VNL-Brand-Guidelines.pdf" class="contact_cta flex items-center gap-2 text-white uppercase pw-2 mb-2" data-astro-cid-qmpwvs2w=""> <span style="min-width: 88px;" data-text="Download" data-astro-cid-qmpwvs2w="">Download</span> <img src="https://vivrithi.vercel.app/Vivrithi_logo.svg" class="w-5 h-5" data-astro-cid-qmpwvs2w=""> </a></li>
+</ul>
+    `;
+    renderPagination();
+    return;
+  }
+  container.className = "grid grid-cols-1 sm:grid-cols-2 gap-6";
+
+  container.innerHTML = list
+    .map((item, index) => {
+      const imageUrl = item.featuredImage?.node?.sourceUrl || "/b1.png";
+      const date = formatDate(item.date);
+       const readTime = getReadingTime(item.content);
+       const hasCustomLink = !!item.news?.link;
+      const newsUrl = hasCustomLink ? item.news.link : `/news/${item.slug}`;
+
+      let a =  `
+      <a href="${newsUrl}" ${hasCustomLink ? 'target="_blank" rel="noopener noreferrer"' : ''}">  <div class="blog-card border-b border-dotted pb-4 sm:pb-4 pr-4 sm:border-r last:border-b-0 last:sm:border-r-0">
+          <div class="blog_card vartical-blog flex flex-col gap-4 overflow-hidden">
+            <div class="blog_image w-full shrink-0 beyond_cap image-flash-container">
+              <img src="${imageUrl}" class="w-full h-auto aspect-80/57 object-cover" />
+            </div>
+            <div class="blog_body">
+              <span class="small text-sm gradient-text">News | ${readTime} </span>
+              <p class="pt-[10px]">${item.title}</p>
+              <span class="blog_date pt-[10px] text-sm flex gap-2 items-center"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6 0C4.40887 0 2.88274 0.632146 1.75707 1.75707C0.632078 2.88261 0 4.40887 0 6C0 7.59113 0.632146 9.11726 1.75707 10.2429C2.88261 11.3679 4.40887 12 6 12C7.59113 12 9.11726 11.3679 10.2429 10.2429C11.3679 9.11739 12 7.59113 12 6C11.9984 4.40942 11.3657 2.88425 10.2407 1.75927C9.11575 0.634286 7.59058 0.00164571 6 0ZM6 11.1429C4.63607 11.1429 3.32791 10.6013 2.36352 9.63648C1.39869 8.6722 0.857143 7.36402 0.857143 6C0.857143 4.63598 1.39875 3.32791 2.36352 2.36352C3.3278 1.39869 4.63598 0.857143 6 0.857143C7.36402 0.857143 8.67209 1.39875 9.63648 2.36352C10.6013 3.3278 11.1429 4.63598 11.1429 6C11.1412 7.36339 10.5991 8.67058 9.63483 9.63483C8.67056 10.5991 7.36347 11.1412 6 11.1429ZM6.42857 2.14286V5.6448C6.42964 5.98605 6.29411 6.31337 6.05196 6.55391L4.16035 8.44552V8.44605C3.99213 8.60838 3.72481 8.6057 3.55928 8.4407C3.39429 8.27516 3.3916 8.00785 3.55392 7.83963L5.44554 5.94802H5.44607C5.52643 5.86766 5.57143 5.75837 5.57143 5.64481V2.14286C5.57143 1.90607 5.76321 1.71429 6 1.71429C6.23679 1.71429 6.42857 1.90607 6.42857 2.14286Z" fill="#2E2E2E"/>
+                </svg>${date}</span>
+            </div>
+          </div>
+        </div></a>
+        
+      `;
+    if ((index + 1) % 2 === 0 && (index + 1) !== itemsPerPage) {
+  a += `<div class="col-span-2 w-full border-b border-dashed border-[#F2994A] mb-6"></div>`;
+}
+
+
+return a;
+    })
+    .join("");
+
+  renderPagination();
+}
+function renderPagination() {
+  if (!paginationEl) return;
+  paginationEl.innerHTML = "";
+
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  if (totalPages <= 1) return;
+
+  const wrapper = document.createElement("div");
+  wrapper.className =
+    "flex items-center justify-center space-x-1 lg:space-x-10 mt-6 mb-10";
+  paginationEl.appendChild(wrapper);
+
+  // Previous text
+  const prevText = document.createElement("button");
+  prevText.textContent = "Previous";
+  prevText.className = "px-2 lg:px-8 py-2 hidden sm:block";
+  prevText.disabled = currentPage === 1;
+  prevText.addEventListener("click", () => renderPage(currentPage - 1));
+  wrapper.appendChild(prevText);
+
+  // LEFT ARROW (SVG)
+  const leftArrow = document.createElement("button");
+  leftArrow.innerHTML = `
+      <span class="rotate-180">
+        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="15" viewBox="0 0 11 15" fill="none">
+          <path d="M1 13.5001L9 7.00006L1 1.00006" stroke="white" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+      </span>`;
+  leftArrow.className =
+    currentPage === 1
+      ? "contact_cta px-[14px] py-[12px] flex items-center gap-2 bg-gray-300 cursor-not-allowed"
+      : "contact_cta px-[14px] py-[12px] flex items-center gap-2 bg-gradient-to-r from-pink-600 to-red-400";
+  leftArrow.disabled = currentPage === 1;
+  leftArrow.addEventListener("click", () => renderPage(currentPage - 1));
+  wrapper.appendChild(leftArrow);
+
+  // PAGE NUMBERS
+  let pagesToShow = [];
+
+  if (totalPages <= 5) {
+    pagesToShow = [...Array(totalPages).keys()].map((i) => i + 1);
+  } else {
+    pagesToShow = [1, currentPage - 1, currentPage, currentPage + 1, totalPages]
+      .filter((p) => p >= 1 && p <= totalPages)
+      .sort((a, b) => a - b);
+
+    // Remove duplicates
+    pagesToShow = [...new Set(pagesToShow)];
+  }
+
+  let lastRendered = 0;
+  pagesToShow.forEach((p) => {
+    if (p - lastRendered > 1) {
+      const dots = document.createElement("span");
+      dots.textContent = "...";
+      dots.className = "px-3 py-2 select-none";
+      wrapper.appendChild(dots);
+    }
+
+    const btn = document.createElement("button");
+    btn.textContent = p;
+
+    btn.className =
+      p === currentPage
+        ? "border-gradent border-gradent-active"
+        : "border-gradent";
+
+    btn.addEventListener("click", () => renderPage(p));
+    wrapper.appendChild(btn);
+
+    lastRendered = p;
+  });
+
+  // RIGHT ARROW (SVG)
+  const rightArrow = document.createElement("button");
+  rightArrow.innerHTML = `
+      <span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="15" viewBox="0 0 11 15" fill="none">
+          <path d="M1 13.5001L9 7.00006L1 1.00006" stroke="white" stroke-width="2" stroke-linecap="round"></path>
+        </svg>
+      </span>`;
+  rightArrow.className =
+    currentPage === totalPages
+      ? "contact_cta px-[14px] py-[12px] bg-gray-300 cursor-not-allowed"
+      : "contact_cta px-[14px] py-[12px] bg-gradient-to-r from-blue-600 to-indigo-500";
+  rightArrow.disabled = currentPage === totalPages;
+  rightArrow.addEventListener("click", () => renderPage(currentPage + 1));
+  wrapper.appendChild(rightArrow);
+
+  // Next text
+  const nextText = document.createElement("button");
+  nextText.textContent = "Next";
+  nextText.className = "px-2 lg:px-8 py-2 hidden sm:block";
+  nextText.disabled = currentPage === totalPages;
+  nextText.addEventListener("click", () => renderPage(currentPage + 1));
+  wrapper.appendChild(nextText);
+}
+
+
+
+
+  // ---------------- INITIAL LOAD ----------------
+  async function loadInitial() {
+    try {
+      // const newsQuery = `{
+      //   news { nodes { id title slug content date featuredImage { node { sourceUrl } } newsCategories { nodes { id name slug } } } }
+      // }`;
+      const newsQuery = `{
+      news(first: 1000) {
+        nodes {
+          id
+          title
+          slug
+          content
+          date
+            news {
+            link
+                }
+          featuredImage { node { sourceUrl } }
+          newsCategories { nodes { id name slug } }
+        }
+      }
+    }`;
+
+      const categoryQuery = `{
+        newsCategories { edges { node { id name slug } } }
+      }`;
+
+      const [resNews, resCat] = await Promise.all([
+        fetch("https://vivritinextdev.wpenginepowered.com/graphql/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query: newsQuery }),
+        }),
+        fetch("https://vivritinextdev.wpenginepowered.com/graphql/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query: categoryQuery }),
+        }),
+      ]);
+
+      const jsonNews = await resNews.json().catch(() => ({ data: { news: { nodes: [] } } }));
+      const jsonCat = await resCat.json().catch(() => ({ data: { newsCategories: { edges: [] } } }));
+
+      newsData = jsonNews?.data?.news?.nodes || [];
+     // filteredData = [...newsData];
+
+     filteredData = newsData.filter((n) =>
+  (n.newsCategories?.nodes || []).some(
+    (c) => c.slug === "media-kit"
+  )
+);
+
+// 🔥 FALLBACK
+if (!filteredData.length) {
+  filteredData = [...newsData];
+}
+
+      renderTopNews(newsData); // render top news
+      renderCategories(jsonCat?.data?.newsCategories?.edges || []);
+      renderPage(1);
+    } catch (err) {
+      console.error("Initial load error:", err);
+      if (container) container.innerHTML = `<p class='text-red-500'>Failed to load news</p>`;
+      if (topNewsContainer) topNewsContainer.innerHTML = `<p class='text-red-500'>Failed to load top news</p>`;
+    }
+  }
+
+  loadInitial();
+});
+</script>

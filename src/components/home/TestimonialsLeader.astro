@@ -1,5 +1,6 @@
 ---
 import LogoShape from '../../../public/Vivrithi_logo.svg';
+const { nonce } = Astro.locals;
 ---
 <div class="bg-[#F8F8F8] w-full md:py-[70px] py-[40px]">
   <div data-reveal class="fade-up container mx-auto px-4 lg:px-8 xl:px-4">
@@ -72,7 +73,7 @@ import LogoShape from '../../../public/Vivrithi_logo.svg';
   </div>
 </div>
 </div>
-<style>
+<style nonce={nonce}>
 .contact_cta2{
     padding: 10px 30px;
     display: flex;

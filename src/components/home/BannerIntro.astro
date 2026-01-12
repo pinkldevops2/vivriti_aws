@@ -3,6 +3,7 @@ import LogoShape from '../../../public/Vivrithi_logo.svg';
 import LogoLines from '../../../public/LogoLines.svg';
 import LogoAnimation from "../../components/common/logoglow2.astro";
 import { GRAPHQL } from "../../config/graphql.js";
+const { nonce } = Astro.locals;
 
 
 function getReadingTime(htmlContent) {
@@ -156,7 +157,7 @@ latestNews = latestNews.slice(0, 1);
     </div>
   </div>
 </div>
-<style>
+<style nonce={nonce}>
 .contact_cta5 {
   padding: 10px 30px;
   display: flex;

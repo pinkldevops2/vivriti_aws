@@ -1,3 +1,6 @@
+---
+const { nonce } = Astro.locals;
+---
 <main class="overflow-hidden relative">
     <div class="slider">
       <div class="item">
@@ -73,7 +76,7 @@
       </span>
     </nav>
   </main>
-  <script>
+  <script nonce={nonce}>
 const slider = document.querySelector(".slider");
 const nextBtn = document.querySelector(".next");
 const prevBtn = document.querySelector(".prev");

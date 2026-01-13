@@ -1,0 +1,17 @@
+---
+import Header from '../components/common/Header.astro';
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/common/Footer.astro';
+import FooterMobile from "../components/common/FooterMobile.astro";
+import TechManagementeIntro from '@/components/TechManagement/techManagementIntro.astro';
+import TechMidCorpTabs from  '@/components/TechManagement/TechTabs.astro';
+import ContactButton from '../components/common/HomeGetInTouch.jsx';
+---
+<Layout>
+    <ContactButton label={"Tell Us Your Portfolio Needs"} href={"/contact-us?segment=tech#leadgen"} />
+<Header />
+<TechManagementeIntro/>
+<TechMidCorpTabs/>
+<Footer />
+<FooterMobile/>
+</Layout>

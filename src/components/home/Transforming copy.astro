@@ -1,5 +1,6 @@
 ---
 import LogoShape from '../../../public/Vivrithi_logo.svg';
+const { nonce } = Astro.locals;
 ---
 <div class="bg-white w-full xl:px-0 md:px-[40px] md:pt-[70px] pt-[40px] px-[20px]">
 <div class="container mx-auto">
@@ -72,7 +73,7 @@ import LogoShape from '../../../public/Vivrithi_logo.svg';
   </div>
 </div>
 </div>
-<style>
+<style nonce={nonce}>
 .contact_cta3{
     padding: 10px 30px;
     display: flex;
@@ -175,7 +176,7 @@ import LogoShape from '../../../public/Vivrithi_logo.svg';
     left: 0px!important;
 }
 </style>
-<script>
+<script nonce={nonce}>
   // Run this only in the browser
   if (typeof window !== "undefined") {
     const items = document.querySelectorAll(".banner_sub_grid_item");

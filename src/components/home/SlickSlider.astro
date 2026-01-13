@@ -1,6 +1,7 @@
 ---
 // src/components/SliderComponent.astro
-import { onMount } from 'astro/runtime'; // Not needed for standard Astro, using script tag instead
+import { onMount } from 'astro/runtime';
+const { nonce } = Astro.locals; // Not needed for standard Astro, using script tag instead
 
 // Props to make each slider unique
 export interface Props {
@@ -20,7 +21,7 @@ const { id, slides } = Astro.props;
   ))}
 </div>
 
-<script define:vars={{ id: id }}>
+<script nonce={nonce} define:vars={{ id: id }}>
   // This script runs on the client-side
   import $ from 'jquery';
   import 'slick-carousel';
@@ -41,7 +42,7 @@ const { id, slides } = Astro.props;
   });
 </script>
 
-<style>
+<style nonce={nonce}>
   /* Add any necessary styles for your slider items */
   .slide-item {
     padding: 20px;

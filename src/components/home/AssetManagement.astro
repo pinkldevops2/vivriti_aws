@@ -1,4 +1,5 @@
 ---
+const { nonce } = Astro.locals;
 ---
 <section class="bg-[#e8ebf7] w-full mx-auto  xl:mt-0 pt-[40px] md:pb-[40px] md:pt-[90px] md:pb-[90px]">
   <div data-reveal class="fade-up container mx-auto px-4 lg:px-8 xl:px-4">
@@ -102,7 +103,7 @@
     </div>
   </div>
 </section>
-<style>
+<style nonce={nonce}>
    .beyond_cap{
     cursor: pointer;
    }

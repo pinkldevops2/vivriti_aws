@@ -26,7 +26,7 @@ export default function TechtabsSwiper({ slides }) {
   };
 
   return (
-    <div className="mx-auto relative w-full py-0">
+    <div role="tablist" className="mx-auto relative w-full py-0">
       <style>{`
         button.techtabs-btn:not(.tabactive) {
           color:#000;
@@ -97,6 +97,7 @@ export default function TechtabsSwiper({ slides }) {
         {slides.map((tab, index) => (
           <SwiperSlide key={tab.id}>
             <button
+              role="tab"
               className={`techtabs-btn px-8 w-full text-left border border-dashed border-[#F58220] transition ${
                 activeTab === tab.id ? "tabactive" : ""
               }`}

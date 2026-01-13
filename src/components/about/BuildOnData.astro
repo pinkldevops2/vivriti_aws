@@ -1,5 +1,6 @@
 ---
 import LogoShape from '../../../public/Vivrithi_logo.svg';
+const { nonce } = Astro.locals;
 ---
 
 <div
@@ -178,12 +179,12 @@ import LogoShape from '../../../public/Vivrithi_logo.svg';
     </div>
   </div>
 </div>
-<style>
+<style nonce={nonce}>
   .absolute{
     position: absolute!important;
   }
 </style>
-<script is:inline>
+<script nonce={nonce} is:inline>
   document.addEventListener("DOMContentLoaded", () => {
     const accordions = document.querySelectorAll(".accordion-item");
 

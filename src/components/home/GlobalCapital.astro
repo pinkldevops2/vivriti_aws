@@ -1,3 +1,6 @@
+---
+const { nonce } = Astro.locals;
+---
 <section class="w-full mx-auto bg-[#3bbae212] pt-[40px] pb-[80px] md:pt-[70px] md:pb-[100px]">
   <div data-reveal class="fade-up container mx-auto">
   <div class="px-[20px] md:px-[40px] xl:px-0">
@@ -130,7 +133,7 @@ supported</span>
     </div>
     </div>
   </section>
-  <script>
+  <script nonce={nonce}>
     const tabs = document.querySelectorAll(".tab");
     const contents = document.querySelectorAll(".content3");
     const prev = document.getElementById("prev");

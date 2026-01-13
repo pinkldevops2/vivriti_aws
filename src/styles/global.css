@@ -775,7 +775,7 @@ button{
     stroke-dashoffset: 4000;
   }
 }
-/* MOBILE: Make it slider */
+
 @media (max-width: 768px) {
   .tab-title-hold {
     display: flex;
@@ -849,7 +849,7 @@ button{
       display:none;
     }
 }
-/* DESKTOP: keep as normal stacked tabs */
+
 @media (min-width: 768px) {
   .tab-title-hhold {
     overflow: visible !important;
@@ -870,15 +870,6 @@ button{
   display: block;
 }
 
-/* Screen placement inside laptop */
-/* .laptop-screen {
-  position: absolute;
-  top: 11%;
-  left: 12%;
-  width:76%;
-  height: 70%;
-  overflow: hidden;
-} */
 .laptop-screen {
     width: 76.8%;
     height: 75%;

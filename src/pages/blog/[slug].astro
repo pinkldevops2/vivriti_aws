@@ -168,15 +168,7 @@ try {
           </div>
         )}
 
-        {item.featuredImage?.node?.sourceUrl && (
-          <div class="my-10 rounded-lg overflow-hidden">
-            <img
-              src={item.featuredImage.node.sourceUrl}
-              alt={item.title}
-              class="w-full object-cover"
-            />
-          </div>
-        )}
+        
       </>
     ) : (
       <p class="text-red-500 text-center">Blog item not found.</p>

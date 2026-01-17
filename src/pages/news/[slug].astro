@@ -1,11 +1,38 @@
 ---
-export const prerender = false;
-
 import Layout from "../../layouts/Layout.astro";
 import Header from "../../components/common/Header.astro";
 import Footer from "../../components/common/Footer.astro";
 import FooterMobile from "../../components/common/FooterMobile.astro";
 import { GRAPHQL } from "../../config/graphql.js";
+
+export async function getStaticPaths() {
+  const res = await fetch(GRAPHQL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      query: `
+        query AllNewsSlugs {
+          news(first: 1000) {
+            nodes {
+              slug
+            }
+          }
+        }
+      `,
+    }),
+  });
+
+  const json = await res.json();
+
+  if (!json?.data?.news?.nodes) {
+    throw new Error("Failed to fetch news slugs from WordPress");
+  }
+
+  return json.data.news.nodes.map((item) => ({
+    params: { slug: item.slug },
+  }));
+}
+
 
 const { slug } = Astro.params;
 

@@ -98,7 +98,7 @@ export default function DrivingImpactSwiper({ slides }) {
                     rel="noopener noreferrer"
                     className="absolute top-4 right-4"
                   >
-                    <img src="icons/linkedin.svg" alt="LinkedIn" />
+                    <img src="/icons/linkedin.svg" alt="LinkedIn" />
                   </a>
 
                   <p className="text-base font-bold">{slide.title}</p>

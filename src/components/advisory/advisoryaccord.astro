@@ -2,6 +2,7 @@
 import LogoShape from "../../../public/Vivrithi_logo.svg";
 import LogoShape1 from "../../../public/logowhite.svg";
 import LogoAnimation from "../../components/common/logoglow.astro";
+const { nonce } = Astro.locals;
 ---
 
 <div class="w-full xl:px-0 md:px-[0px] md:pt-[70px] pt-[40px]">
@@ -255,7 +256,7 @@ import LogoAnimation from "../../components/common/logoglow.astro";
   
 </div>
 
-<style>
+<style nonce={nonce}>
   .accordion-active {
     color: #fff !important;
     background: linear-gradient(
@@ -296,7 +297,7 @@ import LogoAnimation from "../../components/common/logoglow.astro";
 </style>
 
 <!-- JS for Toggle -->
-<script>
+<script nonce={nonce}>
   // ACCORDION TOGGLE
   document.querySelectorAll(".accordion-header").forEach((btn) => {
     btn.addEventListener("click", () => {

@@ -1,0 +1,21 @@
+name: QA-SonarQube Scan
+
+on:
+  pull_request:
+    branches:
+      - staging
+    types:
+      - opened
+      - reopened
+      - synchronize
+      
+jobs:
+  sonar:
+    uses: Vivriti-Capital-Pvt-Ltd/github-actions-shared-workflows/.github/workflows/vivritinext-sonar.yml@nprod
+    with:
+      sonar-project-key: 'vivritinext-sonar'
+      sonar-project-name: 'VivritiNext'
+      skip-sonar: false
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}

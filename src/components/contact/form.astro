@@ -38,7 +38,7 @@ Our team is here to guide you with expert guidance and prompt responses.
         <b>Start by choosing your segment</b></p>
 
 <div class="segment-dropdown md:hidden mb-5 mt-2">
-  <select id="segmentSelect" class="w-full border rounded px-3 py-2 text-sm font-semibold">
+  <select name="segment_select" id="segmentSelect" class="w-full border rounded px-3 py-2 text-sm font-semibold">
     <option value="borrow">Borrow</option>
     <option value="invest">Invest</option>
     <option value="advisory" selected>Advisory</option>
@@ -70,24 +70,24 @@ Our team is here to guide you with expert guidance and prompt responses.
         </div>
 
         <div class="form_element_1">
-          <input type="text" value="" placeholder="Name*" />
+          <input name="name" type="text" value="" placeholder="Name*" />
           <small class="error-text"></small>
         </div>
         <div class="form_element_1">
-          <input type="text" value="" placeholder="Phone" />
+          <input name="phone" type="text" value="" placeholder="Phone" />
         </div>
         <div class="form_element_1">
-          <input type="text" value="" placeholder="Email*" />
+          <input name="email" type="text" value="" placeholder="Email*" />
           <small class="error-text"></small>
         </div>
         <div class="form_element_1">
-          <input type="text" value="" placeholder="Organization" />
+          <input name="organization" type="text" value="" placeholder="Organization" />
         </div>
         <div class="form_element_1">
-          <input type="text" value="" placeholder="Message*" />
+          <input name="message" type="text" value="" placeholder="Message*" />
           <small class="error-text"></small>
         </div>
-        <button class="contact_cta flex justify-center items-center gap-2 text-white uppercase py-2 w-full text-[14px]">
+        <button name="contact_us" class="contact_cta flex justify-center items-center gap-2 text-white uppercase py-2 w-full text-[14px]">
           <span data-text="Contact Us">Contact Us</span>
           <img src={LogoShape.src} class="w-5 h-5" />
         </button>

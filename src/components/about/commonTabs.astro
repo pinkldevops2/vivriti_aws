@@ -3,6 +3,7 @@ import Transforming from "./WhoWeAre.astro";
 import ImpactByNumber from "./ImpactByNumber.astro";
 import VAMAbout from "../vam/WhoWeAre.astro";
 import VAMAImpactByNumber from "../vam/ImpactByNumber.astro";
+const { nonce } = Astro.locals;
 ---
 <div class="w-full mx-auto relative">
   <!-- Tab Buttons -->
@@ -77,3 +78,47 @@ import VAMAImpactByNumber from "../vam/ImpactByNumber.astro";
   }
 </style>
 <script type="module" src="/src/scripts/about/commontabs.js"></script>
+<script nonce={nonce}>
+  document.addEventListener("DOMContentLoaded", () => {
+    const buttons = document.querySelectorAll(".tab-btn");
+    const panels = document.querySelectorAll(".tab-panel");
+
+    // Initialize first tab as active
+    buttons[0].classList.add("tabactive");
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const target = btn.dataset.tab;
+
+        // Update active button
+        buttons.forEach((b) => {
+          const isActive = b === btn;
+          b.setAttribute("aria-selected", isActive);
+
+          // Tailwind toggles
+         /*  b.classList.toggle("border-blue-600", isActive);
+          b.classList.toggle("text-[#fff]", isActive);
+          b.classList.toggle("border-transparent", !isActive); */
+
+          // Add/remove tabactive
+          b.classList.toggle("tabactive", isActive);
+        });
+
+        // Smooth transition panels
+        panels.forEach((panel) => {
+          if (panel.id === target) {
+            panel.classList.remove("hidden");
+            requestAnimationFrame(() => {
+              panel.classList.add("opacity-100", "translate-y-0");
+              panel.classList.remove("opacity-0", "-translate-y-2");
+            });
+          } else {
+            panel.classList.add("opacity-0", "-translate-y-2");
+            panel.classList.remove("opacity-100", "translate-y-0");
+            setTimeout(() => panel.classList.add("hidden"), 400);
+          }
+        });
+      });
+    });
+  });
+</script>

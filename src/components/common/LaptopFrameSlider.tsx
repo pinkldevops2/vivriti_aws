@@ -49,7 +49,6 @@ export default function LaptopFrameSlider({
         alt="Laptop Frame"
         className="laptop-frame"
       />
-
       {/* Screen Area */}
       <div className="laptop-screen">
         <Swiper

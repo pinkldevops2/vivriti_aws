@@ -45,9 +45,6 @@ const slides2 = [
   { id: "05", title: "Disciplined risk and compliance", desc: "Robust governance, credit discipline, and a focus on sustainability ensure consistently high-quality outcomes." },
   { id: "06", title: "Investor network depth", desc: "Access to 1,200+ domestic and global investors, from HNIs and UHNIs to institutions and family offices." },
 ];
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 <Layout>
 	<Header />
@@ -55,13 +52,11 @@ const slides2 = [
 	<ContactButton label={"Begin Your Journey With Us"} href={"/contact-us/#leadgen"} />
 	<Banner />
 	<Transforming />
-
 	<section class="py-6 sm:hidden block">
 		<div data-reveal class="fade-up ">
 			<DrivingImpactSwiper slides={slides1} client:only="react" />			
 		</div>
 	</section> 
-
 	<DrivingImpact />
 	<!-- <TailoredCapital />
 	<GlobalCapital />	 -->
@@ -72,14 +67,6 @@ const slides2 = [
 			<CapitalSlider slides={slides2} client:only="react" />			
 		</div>
 	</section> 
-
-
-	 <!-- <section class="py-12">
-		
-		<div data-reveal class="fade-up testimonials">
-			<SwiperSlider slides={slides} client:only="react" />
-		</div>
-	</section>  -->
 	<Insights />
 	<section class="sm:hidden block">
 	<ThinkTankSlider slides={slides2} client:only="react"/>
@@ -92,7 +79,7 @@ const slides2 = [
         </a>
 	</div>
 </section>
-	<!--  <Testimonials />  -->
+	
 	<TestimonialsLeader/>
 	<MilestonesMarket/>
 

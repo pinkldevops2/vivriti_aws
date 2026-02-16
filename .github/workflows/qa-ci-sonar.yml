@@ -9,6 +9,7 @@ on:
       - reopened
       - synchronize
       
+      
 jobs:
   sonar:
     uses: Vivriti-Capital-Pvt-Ltd/github-actions-shared-workflows/.github/workflows/vivritinext-sonar.yml@nprod

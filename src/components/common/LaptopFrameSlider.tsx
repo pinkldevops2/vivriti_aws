@@ -6,9 +6,9 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 interface LaptopFrameSliderProps {
-  laptopImage: string;
-  slides: string[];
-  sliderId?: string;
+  readonly laptopImage: string;
+  readonly slides: readonly string[];
+  readonly sliderId?: string;
 }
 
 export default function LaptopFrameSlider({
@@ -71,11 +71,11 @@ export default function LaptopFrameSlider({
           }}
           className="laptop-swiper"
         >
-          {slides.map((img, index) => (
-            <SwiperSlide key={index}>
+          {slides.map((img) => (
+            <SwiperSlide key={img}>
               <img
                 src={img}
-                alt={`Slide ${index + 1}`}
+                alt={`Slide for ${img}`}
                 className="slide-image"
               />
             </SwiperSlide>

@@ -1,5 +1,6 @@
 // src/components/DrivingImpactSwiper.jsx
-import { useRef, useState } from "react";
+import { useRef } from "react";
+import PropTypes from "prop-types";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -9,7 +10,6 @@ export default function DrivingImpactSwiper({ slides }) {
   const swiperRef = useRef(null);
   const prevRef = useRef(null);
   const nextRef = useRef(null);
-  const [currentSlide, setCurrentSlide] = useState(1);
 
   return (
     <div className="container mx-auto relative w-full py-4 px-4">
@@ -23,6 +23,7 @@ export default function DrivingImpactSwiper({ slides }) {
       <div className="flex justify-end flex-col md:flex-row absolute bottom-[-45px] left-1/2 -translate-x-1/2 transform md:relative md:left-[initial] md:translate-x-[initial] md:bottom-[initial]">
         <div className="flex justify-end mb-5 items-center gap-5">
           <button ref={prevRef} aria-label="Previous Slide">
+            {/* SVG previous arrow */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="45"
@@ -38,6 +39,7 @@ export default function DrivingImpactSwiper({ slides }) {
           </button>
 
           <button ref={nextRef} aria-label="Next Slide">
+            {/* SVG next arrow */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="45"
@@ -70,17 +72,14 @@ export default function DrivingImpactSwiper({ slides }) {
         }}
         navigation
         onSwiper={(swiper) => (swiperRef.current = swiper)}
-        onSlideChange={(swiper) =>
-          setCurrentSlide(swiper.realIndex + 1)
-        }
         breakpoints={{
           0: { slidesPerView: 1 },
           768: { slidesPerView: 3 },
           1024: { slidesPerView: 4 },
         }}
       >
-        {slides.map((slide, index) => (
-          <SwiperSlide key={index}>
+        {slides.map((slide) => (
+          <SwiperSlide key={slide.id || slide.title}>
             <div className="w-full">
               <div className="relative h-90 overflow-hidden bg-gradient-to-b from-[#0f172a] to-[#1e293b]">
                 <img
@@ -115,3 +114,16 @@ export default function DrivingImpactSwiper({ slides }) {
     </div>
   );
 }
+
+// ✅ PropTypes validation
+DrivingImpactSwiper.propTypes = {
+  slides: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      title: PropTypes.string.isRequired,
+      desc: PropTypes.string.isRequired,
+      img: PropTypes.string.isRequired,
+      link: PropTypes.string,
+    })
+  ).isRequired,
+};

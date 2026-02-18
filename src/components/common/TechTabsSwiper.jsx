@@ -1,4 +1,6 @@
+// src/components/TechtabsSwiper.jsx
 import { useRef, useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
@@ -14,11 +16,8 @@ export default function TechtabsSwiper({ slides }) {
 
   const handleTabClick = (id) => {
     setActiveTab(id);
-
     window.dispatchEvent(
-      new CustomEvent("tab-change", {
-        detail: { id },
-      })
+      new CustomEvent("tab-change", { detail: { id } })
     );
   };
 
@@ -41,6 +40,8 @@ export default function TechtabsSwiper({ slides }) {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  if (!slides || !slides.length) return null;
 
   return (
     <div role="tablist" className="mx-auto relative w-full py-0">
@@ -81,8 +82,17 @@ export default function TechtabsSwiper({ slides }) {
                 className="swiper-button-prev-custom"
                 aria-label="Previous Slide"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="45" height="15" viewBox="0 0 45 15" fill="none">
-                  <path d="M0.292941 7.98894L6.65647 0.284639M0.292941 7.98894L6.65647 14.4268M0.292941 7.98894L44.0692 7.79004" stroke="#555" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="45"
+                  height="15"
+                  viewBox="0 0 45 15"
+                  fill="none"
+                >
+                  <path
+                    d="M0.292941 7.98894L6.65647 0.284639M0.292941 7.98894L6.65647 14.4268M0.292941 7.98894L44.0692 7.79004"
+                    stroke="#555"
+                  />
                 </svg>
               </button>
             )}
@@ -92,8 +102,17 @@ export default function TechtabsSwiper({ slides }) {
                 className="swiper-button-next-custom"
                 aria-label="Next Slide"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="45" height="15" viewBox="0 0 45 15" fill="none">
-                  <path d="M43.7754 6.73909L37.4119 14.4434M43.7754 6.73909L37.4119 0.301253M43.7754 6.73909L0 6.93799" stroke="#555" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="45"
+                  height="15"
+                  viewBox="0 0 45 15"
+                  fill="none"
+                >
+                  <path
+                    d="M43.7754 6.73909L37.4119 14.4434M43.7754 6.73909L37.4119 0.301253M43.7754 6.73909L0 6.93799"
+                    stroke="#555"
+                  />
                 </svg>
               </button>
             )}
@@ -101,19 +120,18 @@ export default function TechtabsSwiper({ slides }) {
         </div>
       )}
 
-      <Swiper        
+      {/* Swiper Carousel */}
+      <Swiper
         modules={[Navigation]}
         spaceBetween={10}
         slidesPerView={3}
         loop={false}
         onSwiper={(swiper) => {
           swiperRef.current = swiper;
-
           const visibleSlides =
             typeof swiper.params.slidesPerView === "number"
               ? swiper.params.slidesPerView
               : 1;
-
           setShowNav(swiper.slides.length > visibleSlides);
           setIsBeginning(swiper.isBeginning);
           setIsEnd(swiper.isEnd);
@@ -131,8 +149,8 @@ export default function TechtabsSwiper({ slides }) {
           768: { slidesPerView: 3 },
         }}
       >
-        {slides.map((tab, index) => (
-          <SwiperSlide key={index}>
+        {slides.map((tab) => (
+          <SwiperSlide key={tab.id}>
             <button
               role="tab"
               className={`techtabs-btn border border-dashed border-[#F58220] w-full text-left px-8 ${
@@ -152,3 +170,14 @@ export default function TechtabsSwiper({ slides }) {
     </div>
   );
 }
+
+// PropTypes validation
+TechtabsSwiper.propTypes = {
+  slides: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      num: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      title: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};

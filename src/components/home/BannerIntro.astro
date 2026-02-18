@@ -80,7 +80,7 @@ latestNews = latestNews.slice(0, 1);
       const newsUrl = hasCustomLink ? post.news.link : `/news/${post.slug}`;
   return (
     <div data-reveal class="fade-up blog_card flex gap-4" key={post.id}>
-      <div class="blog_image w-[120px] shrink-0">
+      <div class="blog_image w-[150px] shrink-0">
       <a
         href={newsUrl}
         target={hasCustomLink ? "_blank" : undefined}
@@ -101,12 +101,12 @@ latestNews = latestNews.slice(0, 1);
       >
         <h4>Quick Read</h4>
         <span class="small text-sm gradient-text">
-          {post.newsCategories?.[0]?.nodes?.[0]?.name || "Report"} | {readTime}
+          {post.newsCategories?.[0]?.nodes?.[0]?.name || "Recent News"} | {readTime}
         </span>
         <p class="pt-[10px]">{
   post.title
-    ? post.title.length > 40
-      ? post.title.substring(0, 40) + "..."
+    ? post.title.length > 45
+      ? post.title.substring(0, 45) + "..."
       : post.title
     : ""
 }

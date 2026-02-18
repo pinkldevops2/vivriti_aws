@@ -53,8 +53,8 @@ function startAutoplay() {
 
 // 🔹 Reset autoplay timer when user interacts
 function resetAutoplay() {
-  //clearInterval(autoplayInterval);
-  //();
+  clearInterval(autoplayInterval);
+  startAutoplay();
 }
 
 // 🔹 Initialize

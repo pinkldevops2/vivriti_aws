@@ -5,6 +5,10 @@ import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 
+/**
+ * AdvisorySwiper component
+ * @param {{ slides: Array }} props
+ */
 export default function AdvisorySwiper({ slides }) {
   const swiperRef = useRef(null);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -16,44 +20,18 @@ export default function AdvisorySwiper({ slides }) {
   const prevTitle = slides[prevIndex]?.subtitle || "";
   const nextTitle = slides[nextIndex]?.subtitle || "";
 
-  // Listen for external events to go to a specific slide
   useEffect(() => {
     const handleGoToSlide = (e) => {
       if (swiperRef.current) {
-        swiperRef.current.slideToLoop(e.detail); // works with loop=true
+        swiperRef.current.slideToLoop(e.detail);
       }
     };
-
     window.addEventListener("go-to-slide", handleGoToSlide);
     return () => window.removeEventListener("go-to-slide", handleGoToSlide);
   }, []);
 
   return (
     <div className="container mx-auto relative w-full">
-      <style>{`
-        .swiper-wrapper {
-          align-items: stretch !important;
-        }
-        .swiper-slide {
-          display: flex !important;
-          flex-direction: column;
-          height: auto !important;
-        }
-        .swiper-button-next-custom:hover svg path,
-        .swiper-button-prev-custom:hover svg path {
-          fill: transparent;
-        }
-          
-          @media (min-width: 768px) {
-          
-          .slider-button{
-          left: calc(50% + 164px);
-          transform: translateX(-50%);
-          }
-             
-          }
-      `}</style>
-
       {/* Navigation + Titles */}
       <div className="slider-button flex justify-end flex-col md:flex-row absolute bottom-[-100px] md:bottom-[-85px] left-1/2 -translate-x-1/2 transform">
         <div className="flex justify-end mb-5 md:items-center items-end gap-4 md:gap-20">
@@ -71,7 +49,6 @@ export default function AdvisorySwiper({ slides }) {
                 className="swiper-button-prev-custom ml-auto md:margin-initial"
                 aria-label="Previous Slide"
               >
-                {/* SVG arrow here */}
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
                   <rect width="30" height="30" transform="translate(30 0) rotate(90)" fill="#D9D9D9" />
                   <rect width="30" height="30" transform="translate(30 0) rotate(90)" fill="url(#paint0_linear_prev)" />
@@ -121,7 +98,7 @@ export default function AdvisorySwiper({ slides }) {
         spaceBetween={10}
         slidesPerView={1}
         loop={true}
-        //autoplay={{ delay: 4500, disableOnInteraction: false }}
+        autoplay={{ delay: 4500, disableOnInteraction: false }}
         onBeforeInit={(swiper) => {
           swiper.params.navigation.prevEl = ".swiper-button-prev-custom";
           swiper.params.navigation.nextEl = ".swiper-button-next-custom";
@@ -129,19 +106,19 @@ export default function AdvisorySwiper({ slides }) {
         onSwiper={(swiper) => (swiperRef.current = swiper)}
         onSlideChange={(swiper) => setCurrentSlide(swiper.realIndex)}
         navigation={{
-          nextEl: ".swiper-button-next-custom",
           prevEl: ".swiper-button-prev-custom",
+          nextEl: ".swiper-button-next-custom",
         }}
       >
-        {slides.map((slide, index) => (
-          <SwiperSlide key={index} id={`slider-${index + 1}`}>
+        {slides.map((slide) => (
+          <SwiperSlide key={slide.id || slide.title}>
             <div className="pt-7 flex flex-col h-full">
               <div className="px-7 flex-1">
                 <h4 className="uppercase text-[14px] text-[#F58220] mb-2">{slide.subtitle}</h4>
                 <h2 className="text-[28px] md:text-[35px] font-heading leading-[120%] mb-8 gradient-text">{slide.title}</h2>
                 <div className="flex flex-col md:flex-row justify-between md:gap-8 mb-4 md:mb-10">
-                  {slide.paragraphs.map((para, pIndex) => (
-                    <p key={pIndex} className="font-normal text-[17px] w-full md:w-6/12 text-[#1B1B1B]">{para}</p>
+                  {slide.paragraphs?.map((para, pIndex) => (
+                    <div key={`${slide.id}-${pIndex}`} className="font-normal text-[17px] w-full md:w-6/12 text-[#1B1B1B]" dangerouslySetInnerHTML={{ __html: para }} />
                   ))}
                 </div>
               </div>

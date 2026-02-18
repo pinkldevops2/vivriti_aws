@@ -1,31 +1,28 @@
 // src/components/DrivingImpactSwiper.jsx
-import { useRef, useState } from "react";
+import { useRef } from "react";
+import PropTypes from "prop-types";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-import LogoShape from "../../../public/Vivrithi_logo.svg";
 
 export default function TechArtemisSwiper({ slides }) {
   const swiperRef = useRef(null);
-  const [currentSlide, setCurrentSlide] = useState(1);
+
+  if (!slides || !slides.length) return null;
 
   return (
-    <div className="mx-auto  relative w-full py-0">
+    <div className="mx-auto relative w-full py-0">
       <style>{`
-        .text-description{
+        .text-description {
           min-height:50px;
         }
       `}</style>
-      {/* Header and Counter */}
-      <div className="flex justify-end flex-col md:flex-row absolute bottom-[-45px] left-1/2 -translate-x-1/2 transform  md:relative md:left-[initial] md:translate-x-[initial] md:bottom-[initial]">
-        {/* Navigation */}
-       
-         <div className="flex justify-end mb-5 items-center gap-5">
-          <button
-            className="swiper-button-prev"
-            aria-label="Previous Slide"
-          >
+
+      {/* Header and Counter / Navigation */}
+      <div className="flex justify-end flex-col md:flex-row absolute bottom-[-45px] left-1/2 -translate-x-1/2 transform md:relative md:left-[initial] md:translate-x-[initial] md:bottom-[initial]">
+        <div className="flex justify-end mb-5 items-center gap-5">
+          <button className="swiper-button-prev" aria-label="Previous Slide">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="45"
@@ -40,8 +37,7 @@ export default function TechArtemisSwiper({ slides }) {
             </svg>
           </button>
           <button className="swiper-button-next" aria-label="Next Slide">
-           
-             <svg
+            <svg
               xmlns="http://www.w3.org/2000/svg"
               width="45"
               height="15"
@@ -55,7 +51,6 @@ export default function TechArtemisSwiper({ slides }) {
             </svg>
           </button>
         </div>
-
       </div>
 
       {/* Swiper Carousel */}
@@ -64,13 +59,12 @@ export default function TechArtemisSwiper({ slides }) {
         spaceBetween={0}
         slidesPerView={2}
         centeredSlides={false}
-        loop={true}
+        loop
         autoplay={{
           delay: 250000,
           disableOnInteraction: false,
         }}
         onSwiper={(swiper) => (swiperRef.current = swiper)}
-        onSlideChange={(swiper) => setCurrentSlide(swiper.realIndex + 1)}
         navigation={{
           nextEl: ".swiper-button-next",
           prevEl: ".swiper-button-prev",
@@ -81,21 +75,19 @@ export default function TechArtemisSwiper({ slides }) {
           1024: { slidesPerView: 2 },
         }}
       >
-        {slides.map((slide, index) => (
-          <SwiperSlide key={index}>
+        {slides.map((slide) => (
+          <SwiperSlide key={slide.id || slide.img}>
             <div className="w-full">
               <div className="w-full beyond_cap image-flash-container relative aspect-97/120 overflow-hidden bg-gradient-to-b from-[#0f172a] to-[#1e293b]">
                 <img
                   src={slide.img}
                   alt={slide.title}
-                  className="absolute inset-0 w-full h-full object-cover object-top bg-[#F0F0F0] "
+                  className="absolute inset-0 w-full h-full object-cover object-top bg-[#F0F0F0]"
                 />
-
-                <div className="absolute inset-0 bg-linear-to-t from-[#00000075] to-[#6361ff00]"></div>
-
+                <div className="absolute inset-0 bg-linear-to-t from-[#00000075] to-[#6361ff00]" />
                 <div className="relative py-5 px-6 md:px-8 text-white flex flex-col justify-end items-start h-full md:p-10">
                   <p className="text-base font-semibold uppercase md:min-h-15">{slide.title}</p>
-                  <span className="text-left text-base  block mt-[5px] font-light min-h-0 hidden md:min-h-10">
+                  <span className="text-left text-base block mt-[5px] font-light min-h-0 hidden md:min-h-10">
                     {slide.desc}
                   </span>
                 </div>
@@ -107,3 +99,15 @@ export default function TechArtemisSwiper({ slides }) {
     </div>
   );
 }
+
+// PropTypes validation
+TechArtemisSwiper.propTypes = {
+  slides: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      title: PropTypes.string.isRequired,
+      img: PropTypes.string.isRequired,
+      desc: PropTypes.string,
+    })
+  ).isRequired,
+};

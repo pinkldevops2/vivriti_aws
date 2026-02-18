@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import PropTypes from "prop-types"; // ✅ add this
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -7,17 +8,11 @@ import "swiper/css/navigation";
 export default function TechtabsSwiper({ slides }) {
   const swiperRef = useRef(null);
 
-  // Default active tab = first tab
   const [activeTab, setActiveTab] = useState(slides[0]?.id || null);
 
-  // When clicking a tab button
   const handleTabClick = (id, index) => {
     setActiveTab(id);
-
-    // Move click-tab to active position
     swiperRef.current?.slideToLoop(index, 0);
-
-    // Send event to Astro
     window.dispatchEvent(
       new CustomEvent("tab-change", {
         detail: { id },
@@ -54,7 +49,6 @@ export default function TechtabsSwiper({ slides }) {
         <button className="swiper-button-prev-custom" aria-label="Previous Slide">
           Prev
         </button>
-
         <button className="swiper-button-next-custom" aria-label="Next Slide">
           Next
         </button>
@@ -64,7 +58,7 @@ export default function TechtabsSwiper({ slides }) {
       <Swiper
         modules={[Navigation, Autoplay]}
         slidesPerView={3}
-        loop={true}
+        loop
         autoplay={{ delay: 250000, disableOnInteraction: false }}
         onSwiper={(swiper) => (swiperRef.current = swiper)}
         navigation={{
@@ -75,41 +69,32 @@ export default function TechtabsSwiper({ slides }) {
           0: { slidesPerView: 1 },
           768: { slidesPerView: 3 },
         }}
-        // ⭐ When swiper moves (next/prev)
         onSlideChange={(swiper) => {
           const realIndex = swiper.realIndex;
           const selectedTab = slides[realIndex].id;
-
-          // Update active tab in React
           setActiveTab(selectedTab);
-
-          // Send event to Astro
           window.dispatchEvent(
             new CustomEvent("tab-change", {
               detail: { id: selectedTab },
             })
           );
-
-          // ⭐ Always move active tab to FIRST position
           swiper.slideToLoop(realIndex, 0);
         }}
       >
-        {slides.map((tab, index) => (
+        {slides.map((tab) => (
           <SwiperSlide key={tab.id}>
             <button
               role="tab"
               className={`techtabs-btn px-8 w-full text-left border border-dashed border-[#F58220] transition ${
                 activeTab === tab.id ? "tabactive" : ""
               }`}
-              aria-selected={activeTab === tab.id ? "true" : "false"}
-              onClick={() => handleTabClick(tab.id, index)}
+              aria-selected={activeTab === tab.id}
+              onClick={() => handleTabClick(tab.id, slides.indexOf(tab))}
             >
               <h4 className="text-[28px] md:text-[35px] font-normal mb-3">
                 {tab.num}.
               </h4>
-              <p className="text-[16px] md:text-[18px] uppercase">
-                {tab.title}
-              </p>
+              <p className="text-[16px] md:text-[18px] uppercase">{tab.title}</p>
             </button>
           </SwiperSlide>
         ))}
@@ -117,3 +102,15 @@ export default function TechtabsSwiper({ slides }) {
     </div>
   );
 }
+
+// ✅ Add prop types validation
+TechtabsSwiper.propTypes = {
+  slides: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      num: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+      title: PropTypes.string,
+    })
+  ).isRequired,
+};
+ 

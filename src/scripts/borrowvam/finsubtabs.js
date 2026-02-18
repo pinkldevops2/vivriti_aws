@@ -14,8 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     btn.addEventListener("click", () => {
-      const isOpen = content.classList.contains("open");
-
       // Close all others
       instAccordions.forEach((other, i) => {
         if (i !== index) {

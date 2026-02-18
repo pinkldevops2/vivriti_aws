@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const prev = document.getElementById("prev2");
     const next = document.getElementById("next2");
     let currentIndex = 0;
-    let autoSlideInterval; // for auto rotation
+    let autoSlideInterval;
 
     function updateTabs(index) {
       tabs.forEach((tab, i) => {
@@ -19,17 +19,14 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       contents.forEach((c, i) => {
-        //const title = c.querySelector(".gradient-text");
         const imgWrap = c.querySelector(".image-wrapper");
         if (i === index) {
           c.classList.remove("hidden");
           requestAnimationFrame(() => {
-            //title.classList.add("fade-in");
             imgWrap.classList.add("fade-in");
           });
         } else {
           c.classList.add("hidden");
-          //title.classList.remove("fade-in");
           imgWrap.classList.remove("fade-in");
         }
       });
@@ -60,9 +57,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function startAutoSlide() {
       autoSlideInterval = setInterval(() => {
-        currentIndex = (currentIndex + 1) % tabs.length; // loop continuously
+        currentIndex = (currentIndex + 1) % tabs.length;
         updateTabs(currentIndex);
-      }, 5000); // every 5 seconds
+      }, 5000);
     }
 
     function restartAutoSlide() {

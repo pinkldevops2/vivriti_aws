@@ -1,4 +1,5 @@
-document.querySelectorAll(".accordion-header").forEach((btn) => {
+document.addEventListener("DOMContentLoaded", () => {
+ document.querySelectorAll(".accordion-header").forEach((btn) => {
     btn.addEventListener("click", () => {
       const targetId = btn.dataset.target;
       const boxId = btn.dataset.box;
@@ -51,3 +52,5 @@ document.querySelectorAll(".accordion-header").forEach((btn) => {
       }
     });
   });
+
+});

@@ -4,14 +4,19 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import PropTypes from "prop-types";
 
 /**
  * AdvisorySwiper component
  * @param {{ slides: Array }} props
  */
-export default function AdvisorySwiper({ slides }) {
+export default function AdvisorySwiper({ slides = [] }) {
   const swiperRef = useRef(null);
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  if (!slides || slides.length === 0) {
+    return null;
+  }
 
   const totalSlides = slides.length;
   const prevIndex = (currentSlide - 1 + totalSlides) % totalSlides;
@@ -117,8 +122,8 @@ export default function AdvisorySwiper({ slides }) {
                 <h4 className="uppercase text-[14px] text-[#F58220] mb-2">{slide.subtitle}</h4>
                 <h2 className="text-[28px] md:text-[35px] font-heading leading-[120%] mb-8 gradient-text">{slide.title}</h2>
                 <div className="flex flex-col md:flex-row justify-between md:gap-8 mb-4 md:mb-10">
-                  {slide.paragraphs?.map((para, pIndex) => (
-                    <div key={`${slide.id}-${pIndex}`} className="font-normal text-[17px] w-full md:w-6/12 text-[#1B1B1B]" dangerouslySetInnerHTML={{ __html: para }} />
+                  {slide.paragraphs?.map((para) => (
+                    <div key={`${slide.id}-${para}`} className="font-normal text-[17px] w-full md:w-6/12 text-[#1B1B1B]" dangerouslySetInnerHTML={{ __html: para }} />
                   ))}
                 </div>
               </div>
@@ -130,3 +135,18 @@ export default function AdvisorySwiper({ slides }) {
     </div>
   );
 }
+
+AdvisorySwiper.propTypes = {
+  slides: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number,
+      ]).isRequired,
+      title: PropTypes.string.isRequired,
+      subtitle: PropTypes.string,
+      img: PropTypes.string,
+      paragraphs: PropTypes.arrayOf(PropTypes.string),
+    })
+  ),
+};

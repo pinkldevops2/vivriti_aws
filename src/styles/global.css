@@ -10,6 +10,10 @@
   --font-heading: "Poppins", sans-serif;
 }
 
+:root {
+  --primary-gradient: linear-gradient(32deg, #3BBAE2 0%, #00018A 100%);
+}
+
 body {
   font-size: 16px;
   color: #1B1B1B;
@@ -35,8 +39,7 @@ button {
 
 /* Consolidated .contact_cta styles */
 .contact_cta {
-  background: #3BBAE2;
-  background: linear-gradient(32deg, rgba(59, 186, 226, 1) 0%, rgba(0, 1, 138, 1) 100%);
+  background: var(--primary-gradient);
   letter-spacing: 1px;
   overflow: hidden;
   position: relative;
@@ -63,7 +66,6 @@ button {
   top: 0;
   transform: translate(-50%, 0);
   content: '';
-  background: #3BBAE2;
   background: linear-gradient(32deg, rgb(59 115 226) 0%, rgb(211 70 98) 50%, rgb(204 96 4) 100%);
   width: 0px;
   height: 0px;
@@ -120,7 +122,7 @@ button {
 }
 
 .contact_cta.contact_cta-wwhite:hover span.gradient-text {
-  background: initial;
+  background: none;
   -webkit-background-clip: initial;
   -webkit-text-fill-color: initial;
 }
@@ -551,8 +553,7 @@ button {
 
 .blog_card::after {
   content: '';
-  background: #3BBAE2;
-  background: linear-gradient(32deg, rgba(59, 186, 226, 1) 0%, rgba(0, 1, 138, 1) 100%);
+  background: var(--primary-gradient);
   position: absolute;
   z-index: 1;
   transition: all 0.4s ease-in-out;
@@ -571,7 +572,7 @@ button {
   left: initial;
   width: 100%;
   height: 70%;
-  background: initial;
+  background: none;
   inset: initial;
   top: 0;
   left: 0;
@@ -595,6 +596,7 @@ button {
 
 .blog_card:hover .blog_body .gradient-text {
   background: linear-gradient(90deg, #ffffff, #3BBAE2);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -604,7 +606,7 @@ button {
 }
 
 .blog_card.vartical-blog:hover .gradient-text {
-  background: initial;
+  background: none;
   -webkit-background-clip: initial;
   -webkit-text-fill-color: initial;
 }
@@ -648,8 +650,7 @@ button {
 }
 
 .banner_sub_grid_item_bg {
-  background: #3BBAE2;
-  background: linear-gradient(32deg, rgba(59, 186, 226, 1) 0%, rgba(0, 1, 138, 1) 100%);
+  background: var(--primary-gradient);
 }
 
 /* Files List */
@@ -687,9 +688,11 @@ button {
   .container {
     max-width: 100%;
   }
-  .image-wrapper,
-  .image-wrapper img {
+  .image-wrapper{
     width: 575px;
+  }
+  .image-wrapper img {
+    width: 100%;
   }
 }
 
@@ -697,9 +700,11 @@ button {
   .container {
     max-width: 100%;
   }
-  .image-wrapper,
-  .image-wrapper img {
+  .image-wrapper{
     width: 380px;
+  }
+  .image-wrapper img {
+    width: 100%;
   }
   .logoanimation {
     display: none;
@@ -897,7 +902,7 @@ button {
   }
   .tab-active,
   .tab-active2 {
-    background: linear-gradient(32deg, rgba(59, 186, 226, 1) 0%, rgba(0, 1, 138, 1) 100%);
+    background: var(--primary-gradient);
     color: #fff !important;
     -webkit-text-fill-color: #fff !important;
   }

@@ -103,6 +103,7 @@ export default function AdvisorySwiper({ slides = [] }) {
         spaceBetween={10}
         slidesPerView={1}
         loop={true}
+        autoHeight={true}
         autoplay={{ delay: 4500, disableOnInteraction: false }}
         onBeforeInit={(swiper) => {
           swiper.params.navigation.prevEl = ".swiper-button-prev-custom";

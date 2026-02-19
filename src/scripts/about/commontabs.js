@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (btn.classList.contains("tabactive")) return; // Do nothing if already active
 
       const targetId = btn.dataset.tab;
-      const targetPanel = document.getElementById(targetId);
 
       // 1. Update active button state
       buttons.forEach((b) => {

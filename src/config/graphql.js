@@ -1,1 +1,1 @@
-export const GRAPHQL = "https://web.pinklemonadedigital.com/vivriti/graphql/";
+export const GRAPHQL = "https://vivritinextdev.wpenginepowered.com/graphql/";

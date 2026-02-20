@@ -1,72 +1,86 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const tabs = document.querySelectorAll(".tab");
-    const contents = document.querySelectorAll(".content3");
-    const prev = document.getElementById("prev");
-    const next = document.getElementById("next");
-    let currentIndex = 0;
-    let autoSlideInterval;
+  const tabs = document.querySelectorAll(".tab");
+  const contents = document.querySelectorAll(".content3");
+  const prev = document.getElementById("prev");
+  const next = document.getElementById("next");
+  
+  let currentIndex = 0;
+  let autoSlideInterval;
 
-    function updateTabs(index) {
-      tabs.forEach((tab, i) => {
-        if (i === index) {
-          tab.classList.add("tab-active");
-          tab.classList.remove("text-[#4B4B4B]");
-        } else {
-          tab.classList.remove("tab-active");
-          tab.classList.add("text-[#4B4B4B]");
-          tab.style.fontSize = "18px";
-        }
-      });
-
-      contents.forEach((c, i) => {
-        const imgWrap = c.querySelector(".image-wrapper");
-        if (i === index) {
-          c.classList.remove("hidden");
-          requestAnimationFrame(() => {
-            imgWrap.classList.add("fade-in");
-          });
-        } else {
-          c.classList.add("hidden");
-          imgWrap.classList.remove("fade-in");
-        }
-      });
-
-      prev.disabled = index === 0;
-      next.disabled = index === tabs.length - 1;
+  // 1. Helper to manage class states (Avoids nested if/else)
+  const toggleState = (element, isActive, activeClass, inactiveClass = "") => {
+    if (isActive) {
+      element.classList.add(activeClass);
+      if (inactiveClass) element.classList.remove(inactiveClass);
+      return;
     }
+    element.classList.remove(activeClass);
+    if (inactiveClass) element.classList.add(inactiveClass);
+  };
 
+  function updateTabs(index) {
+    // Single loop for tabs
     tabs.forEach((tab, i) => {
-      tab.addEventListener("click", () => {
-        currentIndex = i;
-        updateTabs(currentIndex);
-        restartAutoSlide();
-      });
+      const isActive = i === index;
+      toggleState(tab, isActive, "tab-active", "text-[#4B4B4B]");
+      // Move font-size to CSS class if possible, but keeping it flat here:
+      tab.style.fontSize = isActive ? "" : "18px"; 
     });
 
-    prev.addEventListener("click", () => {
-      if (currentIndex > 0) currentIndex--;
+    // Single loop for contents
+    contents.forEach((c, i) => {
+      const isActive = i === index;
+      const imgWrap = c.querySelector(".image-wrapper");
+
+      c.classList.toggle("hidden", !isActive);
+      
+      if (isActive && imgWrap) {
+        requestAnimationFrame(() => imgWrap.classList.add("fade-in"));
+      } else if (imgWrap) {
+        imgWrap.classList.remove("fade-in");
+      }
+    });
+
+    // Button states
+    prev.disabled = index === 0;
+    next.disabled = index === tabs.length - 1;
+  }
+
+  /* -------------------- EVENT LISTENERS -------------------- */
+
+  const handleInteraction = (newIndex) => {
+    currentIndex = newIndex;
+    updateTabs(currentIndex);
+    restartAutoSlide();
+  };
+
+  tabs.forEach((tab, i) => {
+    tab.addEventListener("click", () => handleInteraction(i));
+  });
+
+  prev.addEventListener("click", () => {
+    if (currentIndex > 0) handleInteraction(currentIndex - 1);
+  });
+
+  next.addEventListener("click", () => {
+    if (currentIndex < tabs.length - 1) handleInteraction(currentIndex + 1);
+  });
+
+  /* -------------------- AUTO SLIDE -------------------- */
+
+  function startAutoSlide() {
+    autoSlideInterval = setInterval(() => {
+      currentIndex = (currentIndex + 1) % tabs.length;
       updateTabs(currentIndex);
-      restartAutoSlide();
-    });
+    }, 5000);
+  }
 
-    next.addEventListener("click", () => {
-      if (currentIndex < tabs.length - 1) currentIndex++;
-      updateTabs(currentIndex);
-      restartAutoSlide();
-    });
-
-    function startAutoSlide() {
-      autoSlideInterval = setInterval(() => {
-        currentIndex = (currentIndex + 1) % tabs.length;
-        updateTabs(currentIndex);
-      }, 5000);
-    }
-
-    function restartAutoSlide() {
-      clearInterval(autoSlideInterval);
-      startAutoSlide();
-    }
-
-    updateTabs(0);
+  function restartAutoSlide() {
+    clearInterval(autoSlideInterval);
     startAutoSlide();
-    });
+  }
+
+  // Init
+  updateTabs(0);
+  startAutoSlide();
+});

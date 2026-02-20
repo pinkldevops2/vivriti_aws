@@ -712,11 +712,6 @@ button {
   .orange-dashed {
     left: 190px;
   }
-  .tab-title-hold {
-    margin-top: 0px;
-    margin-bottom: 20px;
-    gap: 10px;
-  }
 }
 
 @media (max-width: 650px) {
@@ -743,10 +738,6 @@ button {
     bottom: -10px;
     right: -10px;
     display: none;
-  }
-  .tab-title-hold {
-    justify-content: center;
-    margin-top: 15px;
   }
   .arrow-holder {
     width: 80px;
@@ -829,14 +820,6 @@ button {
 }
 /* MOBILE: Make it slider */
 @media (max-width: 768px) {
-  .tab-title-hold {
-    display: flex;
-    gap: 20px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
-    padding-bottom: 10px;
-  }
   .tab-title-hold .tab,
   .tab-title-hold .tab2 {
     flex: 0 0 43%;
@@ -887,10 +870,6 @@ button {
     background-size: cover;
     background-repeat: repeat-y;
   }
-  .tab-title-hold {
-    gap: 15px;
-    justify-content: flex-start;
-  }
   .tab-active,
   .tab-active2 {
     background: var(--primary-gradient);
@@ -907,11 +886,51 @@ button {
     display: none;
   }
 }
-/* DESKTOP: keep as normal stacked tabs */
+
+/* Base & Tablet Styles */
+.tab-title-hold {
+  display: flex;
+  gap: 15px;
+  margin-top: 15px;
+  justify-content: center;
+  /* Ensure it doesn't break layout on mid-screens */
+  overflow: visible; 
+  white-space: normal;
+}
+
+/* Mobile Slider (below 768px) */
+@media (max-width: 768px) {
+  .tab-title-hold {
+    justify-content: flex-start;
+    gap: 20px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    padding-bottom: 10px;
+    margin-top: 15px; /* From your line 518 */
+  }
+
+  /* Hide scrollbar for a clean look */
+  .tab-title-hold::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Specific Desktop Adjustments (above 768px) */
 @media (min-width: 768px) {
   .tab-title-hold {
-    overflow: visible !important;
-    white-space: normal;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    gap: 10px;
+  }
+}
+
+/* Specific Tablet Tweak (650px to 768px) */
+@media (max-width: 768px) and (min-width: 650px) {
+  .tab-title-hold {
+    margin-top: 0px;
+    margin-bottom: 20px;
+    gap: 10px;
   }
 }
 

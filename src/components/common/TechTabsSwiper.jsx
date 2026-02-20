@@ -1,5 +1,4 @@
-// src/components/TechtabsSwiper.jsx
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
@@ -8,37 +7,40 @@ import "swiper/css/navigation";
 
 export default function TechtabsSwiper({ slides }) {
   const swiperRef = useRef(null);
-
   const [activeTab, setActiveTab] = useState(slides?.[0]?.id ?? null);
   const [showNav, setShowNav] = useState(false);
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
 
+  // Helper to update state safely
+  const updateNavigationState = useCallback((swiper) => {
+    if (!swiper) return; // Guard clause: ensures rest of block is conditional
+
+    const visibleSlides = swiper.params?.slidesPerView ?? 1;
+    const totalSlides = swiper.slides?.length ?? 0;
+
+    setShowNav(totalSlides > visibleSlides);
+    setIsBeginning(swiper.isBeginning);
+    setIsEnd(swiper.isEnd);
+  }, []);
+
   const handleTabClick = (id) => {
     setActiveTab(id);
-    window.dispatchEvent(
-      new CustomEvent("tab-change", { detail: { id } })
-    );
+    window.dispatchEvent(new CustomEvent("tab-change", { detail: { id } }));
   };
 
-  // Recalculate navigation on resize
   useEffect(() => {
     const handleResize = () => {
-      const swiper = swiperRef.current;
-
-      const visibleSlides =
-        swiper?.params?.slidesPerView ?? 1;
-
-      setShowNav((swiper?.slides?.length ?? 0) > visibleSlides);
-      setIsBeginning(swiper?.isBeginning ?? true);
-      setIsEnd(swiper?.isEnd ?? false);
+      if (swiperRef.current) {
+        updateNavigationState(swiperRef.current);
+      }
     };
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [updateNavigationState]);
 
- if (!slides?.length) return null;
+  if (!slides?.length) return null;
 
   return (
     <div role="tablist" className="mx-auto relative w-full py-0">
@@ -51,22 +53,12 @@ export default function TechtabsSwiper({ slides }) {
         .tabactive {
           color: #fff !important;
           padding: 40px 40px;
-          background: linear-gradient(
-            312deg,
-            rgba(59, 186, 226, 1) 0%,
-            rgba(0, 1, 138, 1) 100%
-          );
+          background: linear-gradient(312deg, #3BBAE2 0%, #00018A 100%);
         }
-        .tabactive p {
-          font-weight: 700;
-        }
+        .tabactive p { font-weight: 700; }
         button.techtabs-btn:not(.tabactive):hover {
           color: #fff !important;
-          background: linear-gradient(
-            312deg,
-            rgba(59, 186, 226, 1) 0%,
-            rgba(0, 1, 138, 1) 100%
-          );
+          background: linear-gradient(312deg, #3BBAE2 0%, #00018A 100%);
         }
       `}</style>
 
@@ -75,41 +67,17 @@ export default function TechtabsSwiper({ slides }) {
         <div className="flex justify-end flex-col md:flex-row absolute bottom-[-45px] left-1/2 -translate-x-1/2 md:relative md:bottom-auto md:left-auto md:translate-x-0">
           <div className="flex justify-end mb-5 items-center gap-5">
             {!isBeginning && (
-              <button
-                className="swiper-button-prev-custom"
-                aria-label="Previous Slide"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="45"
-                  height="15"
-                  viewBox="0 0 45 15"
-                  fill="none"
-                >
-                  <path
-                    d="M0.292941 7.98894L6.65647 0.284639M0.292941 7.98894L6.65647 14.4268M0.292941 7.98894L44.0692 7.79004"
-                    stroke="#555"
-                  />
+              <button className="swiper-button-prev-custom" aria-label="Previous Slide">
+                <svg width="45" height="15" viewBox="0 0 45 15" fill="none">
+                  <path d="M0.292941 7.98894L6.65647 0.284639M0.292941 7.98894L6.65647 14.4268M0.292941 7.98894L44.0692 7.79004" stroke="#555" />
                 </svg>
               </button>
             )}
 
             {!isEnd && (
-              <button
-                className="swiper-button-next-custom"
-                aria-label="Next Slide"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="45"
-                  height="15"
-                  viewBox="0 0 45 15"
-                  fill="none"
-                >
-                  <path
-                    d="M43.7754 6.73909L37.4119 14.4434M43.7754 6.73909L37.4119 0.301253M43.7754 6.73909L0 6.93799"
-                    stroke="#555"
-                  />
+              <button className="swiper-button-next-custom" aria-label="Next Slide">
+                <svg width="45" height="15" viewBox="0 0 45 15" fill="none">
+                  <path d="M43.7754 6.73909L37.4119 14.4434M43.7754 6.73909L37.4119 0.301253M43.7754 6.73909L0 6.93799" stroke="#555" />
                 </svg>
               </button>
             )}
@@ -117,26 +85,15 @@ export default function TechtabsSwiper({ slides }) {
         </div>
       )}
 
-      {/* Swiper Carousel */}
       <Swiper
         modules={[Navigation]}
         spaceBetween={10}
         slidesPerView={3}
-        loop={false}
         onSwiper={(swiper) => {
           swiperRef.current = swiper;
-
-          const visibleSlides =
-            swiper?.params?.slidesPerView ?? 1;
-
-          setShowNav((swiper?.slides?.length ?? 0) > visibleSlides);
-          setIsBeginning(swiper?.isBeginning ?? true);
-          setIsEnd(swiper?.isEnd ?? false);
+          updateNavigationState(swiper);
         }}
-        onSlideChange={(swiper) => {
-          setIsBeginning(swiper?.isBeginning ?? true);
-          setIsEnd(swiper?.isEnd ?? false);
-        }}
+        onSlideChange={(swiper) => updateNavigationState(swiper)}
         navigation={{
           nextEl: ".swiper-button-next-custom",
           prevEl: ".swiper-button-prev-custom",
@@ -157,9 +114,7 @@ export default function TechtabsSwiper({ slides }) {
               onClick={() => handleTabClick(tab.id)}
             >
               <h4 className="text-[28px] md:text-[35px] mb-3">{tab.num}.</h4>
-              <p className="text-[16px] md:text-[18px] uppercase">
-                {tab.title}
-              </p>
+              <p className="text-[16px] md:text-[18px] uppercase">{tab.title}</p>
             </button>
           </SwiperSlide>
         ))}
@@ -168,7 +123,6 @@ export default function TechtabsSwiper({ slides }) {
   );
 }
 
-// PropTypes validation
 TechtabsSwiper.propTypes = {
   slides: PropTypes.arrayOf(
     PropTypes.shape({

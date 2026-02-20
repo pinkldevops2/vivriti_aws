@@ -1,4 +1,3 @@
-// src/components/AdvisorySwiper.jsx
 import { useRef, useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
@@ -12,7 +11,17 @@ import PropTypes from "prop-types";
  */
 export default function AdvisorySwiper({ slides = [] }) {
   const swiperRef = useRef(null);
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);  
+
+  useEffect(() => {
+    const handleGoToSlide = (e) => {
+      if (swiperRef.current) {
+        swiperRef.current.slideToLoop(e.detail);
+      }
+    };
+    window.addEventListener("go-to-slide", handleGoToSlide);
+    return () => window.removeEventListener("go-to-slide", handleGoToSlide);
+  }, []);
 
   if (!slides || slides.length === 0) {
     return null;
@@ -24,16 +33,6 @@ export default function AdvisorySwiper({ slides = [] }) {
 
   const prevTitle = slides[prevIndex]?.subtitle || "";
   const nextTitle = slides[nextIndex]?.subtitle || "";
-
-  useEffect(() => {
-    const handleGoToSlide = (e) => {
-      if (swiperRef.current) {
-        swiperRef.current.slideToLoop(e.detail);
-      }
-    };
-    window.addEventListener("go-to-slide", handleGoToSlide);
-    return () => window.removeEventListener("go-to-slide", handleGoToSlide);
-  }, []);
 
   return (
     <div className="container mx-auto relative w-full">

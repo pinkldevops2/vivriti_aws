@@ -1,4 +1,3 @@
-// src/components/SwiperSlider.jsx
 import { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -11,7 +10,7 @@ export default function SwiperSlider({ slides }) {
   const swiperRef = useRef(null);
   const [currentSlide, setCurrentSlide] = useState(1);
 
-  if (!slides || !slides.length) return null;
+  if (!slides?.length) return null;
 
   return (
     <div className="relative w-full testimonials">

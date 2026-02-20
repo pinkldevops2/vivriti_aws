@@ -45,10 +45,9 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
       // Search filter
-      const searchMatch =
-        !q ||
-        (n.title && n.title.toLowerCase().includes(q)) ||
-        (n.content && n.content.toLowerCase().includes(q));
+      const searchMatch = !q || 
+      n.title?.toLowerCase().includes(q) || 
+      n.content?.toLowerCase().includes(q);
 
       return categoryMatch && searchMatch;
     });

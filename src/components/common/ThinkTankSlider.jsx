@@ -1,4 +1,3 @@
-// src/components/DrivingImpactSwiper.jsx
 import { useRef } from "react";
 import PropTypes from "prop-types";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -19,7 +18,7 @@ export default function ThinkTankSlider({ posts }) {
     return `${minutes} min read`;
   }
 
-  if (!posts || !posts.length) return null;
+  if (!posts?.length) return null;
 
   return (
     <div className="driving-impact-slider relative w-full bg-[#3bbae212] py-4">

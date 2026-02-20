@@ -1,4 +1,3 @@
-document.addEventListener("DOMContentLoaded", () => {
   const dropdown = document.getElementById('customDropdown');
   const toggle = dropdown.querySelector('.dropdown-toggle');
   const label = document.getElementById('dropdownLabel');
@@ -87,42 +86,96 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function validateName(input) {
-    const name = input.value.trim();
-    const nameRegex = /^[A-Za-z]+([ '-][A-Za-z]+)*$/;
-    if (!name) return showError(input, "Name is required"), false;
-    if (name.length < 3) return showError(input, "Name must be at least 3 characters"), false;
-    if (name.length > 50) return showError(input, "Name is too long"), false;
-    if (!nameRegex.test(name)) return showError(input, "Only letters allowed"), false;
-    clearError(input);
-    return true;
+  const name = input.value.trim();
+  const nameRegex = /^[A-Za-z]+([ '-][A-Za-z]+)*$/;
+
+  if (!name) {
+    showError(input, "Name is required");
+    return false;
   }
 
-  function validatePhone(input) {
-    const phone = input.value.trim().replace(/\D/g, "");
-    const phoneRegex = /^[6-9]\d{9}$/;
-    if (!phone) return showError(input, "Phone number is required"), false;
-    if (!phoneRegex.test(phone)) return showError(input, "Enter valid 10-digit mobile number"), false;
-    if (/^(\d)\1{9}$/.test(phone)) return showError(input, "Invalid phone number"), false;
-
-    input.value = phone;
-    clearError(input);
-    return true;
+  if (name.length < 3) {
+    showError(input, "Name must be at least 3 characters");
+    return false;
   }
 
-  function validateEmail(input) {
-    let email = input.value.trim().toLowerCase();
-    const emailRegex = /^[a-z0-9]+([._%+-]?[a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)+$/;
-
-    if (!email) return showError(input, "Email is required"), false;
-    if (email.length > 254) return showError(input, "Email is too long"), false;
-    if (/\s/.test(email)) return showError(input, "Spaces are not allowed"), false;
-    if (email.includes("..")) return showError(input, "Invalid email format"), false;
-    if (!emailRegex.test(email)) return showError(input, "Enter a valid email"), false;
-
-    input.value = email;
-    clearError(input);
-    return true;
+  if (name.length > 50) {
+    showError(input, "Name is too long");
+    return false;
   }
+
+  if (!nameRegex.test(name)) {
+    showError(input, "Only letters allowed");
+    return false;
+  }
+
+  clearError(input);
+  return true;
+}
+
+function validatePhone(input) {
+  const phone = input.value.trim().replace(/\D/g, "");
+  const phoneRegex = /^[6-9]\d{9}$/;
+
+  // 1. Check for empty input
+  if (!phone) {
+    showError(input, "Phone number is required");
+    return false;
+  }
+
+  // 2. Check for standard format (starts with 6-9 and is 10 digits)
+  if (!phoneRegex.test(phone)) {
+    showError(input, "Enter valid 10-digit mobile number");
+    return false;
+  }
+
+  // 3. Check for repetitive digits (e.g., 9999999999)
+  if (/^(\d)\1{9}$/.test(phone)) {
+    showError(input, "Invalid phone number");
+    return false;
+  }
+
+  // Cleanup: Update the input field to show the sanitized number (digits only)
+  input.value = phone;
+  clearError(input);
+  return true;
+}
+
+function validateEmail(input) {
+  let email = input.value.trim().toLowerCase();
+  // Improved regex for standard email validation
+  const emailRegex = /^[a-z0-9]+([._%+-]?[a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)+$/;
+
+  if (!email) {
+    showError(input, "Email is required");
+    return false;
+  }
+
+  if (email.length > 254) {
+    showError(input, "Email is too long");
+    return false;
+  }
+
+  if (/\s/.test(email)) {
+    showError(input, "Spaces are not allowed");
+    return false;
+  }
+
+  if (email.includes("..")) {
+    showError(input, "Invalid email format");
+    return false;
+  }
+
+  if (!emailRegex.test(email)) {
+    showError(input, "Enter a valid email");
+    return false;
+  }
+
+  // Sanitize the input field with the trimmed/lowercased version
+  input.value = email;
+  clearError(input);
+  return true;
+}
 
   // ---------- FORM SUBMISSION ----------
   form.addEventListener("submit", function (e) {
@@ -195,4 +248,3 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.classList.add("hidden");
     modal.classList.remove("flex");
   });
-});

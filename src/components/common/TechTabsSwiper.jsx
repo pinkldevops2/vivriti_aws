@@ -9,7 +9,7 @@ import "swiper/css/navigation";
 export default function TechtabsSwiper({ slides }) {
   const swiperRef = useRef(null);
 
-  const [activeTab, setActiveTab] = useState(slides[0]?.id || null);
+  const [activeTab, setActiveTab] = useState(slides?.[0]?.id ?? null);
   const [showNav, setShowNav] = useState(false);
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
@@ -25,23 +25,20 @@ export default function TechtabsSwiper({ slides }) {
   useEffect(() => {
     const handleResize = () => {
       const swiper = swiperRef.current;
-      if (!swiper) return;
 
       const visibleSlides =
-        typeof swiper.params.slidesPerView === "number"
-          ? swiper.params.slidesPerView
-          : 1;
+        swiper?.params?.slidesPerView ?? 1;
 
-      setShowNav(swiper.slides.length > visibleSlides);
-      setIsBeginning(swiper.isBeginning);
-      setIsEnd(swiper.isEnd);
+      setShowNav((swiper?.slides?.length ?? 0) > visibleSlides);
+      setIsBeginning(swiper?.isBeginning ?? true);
+      setIsEnd(swiper?.isEnd ?? false);
     };
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  if (!slides || !slides.length) return null;
+ if (!slides?.length) return null;
 
   return (
     <div role="tablist" className="mx-auto relative w-full py-0">
@@ -128,17 +125,17 @@ export default function TechtabsSwiper({ slides }) {
         loop={false}
         onSwiper={(swiper) => {
           swiperRef.current = swiper;
+
           const visibleSlides =
-            typeof swiper.params.slidesPerView === "number"
-              ? swiper.params.slidesPerView
-              : 1;
-          setShowNav(swiper.slides.length > visibleSlides);
-          setIsBeginning(swiper.isBeginning);
-          setIsEnd(swiper.isEnd);
+            swiper?.params?.slidesPerView ?? 1;
+
+          setShowNav((swiper?.slides?.length ?? 0) > visibleSlides);
+          setIsBeginning(swiper?.isBeginning ?? true);
+          setIsEnd(swiper?.isEnd ?? false);
         }}
         onSlideChange={(swiper) => {
-          setIsBeginning(swiper.isBeginning);
-          setIsEnd(swiper.isEnd);
+          setIsBeginning(swiper?.isBeginning ?? true);
+          setIsEnd(swiper?.isEnd ?? false);
         }}
         navigation={{
           nextEl: ".swiper-button-next-custom",

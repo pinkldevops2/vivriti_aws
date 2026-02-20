@@ -1,67 +1,75 @@
 document.addEventListener("DOMContentLoaded", () => {
   const buttons = document.querySelectorAll(".borrowvcl-btn");
   const panels = document.querySelectorAll(".borrowvcl-panel");
-  let isTransitioning = false; // Prevents clicking during animation
 
-  // Helper to get currently active panel
-  const getActivePanel = () => document.querySelector(".borrowvcl-panel:not(.hidden)");
+  if (!buttons.length || !panels.length) return;
 
-  // 1. Initialize: Set first tab as active and show first panel
-  if (buttons.length > 0) buttons[0].classList.add("tabactive");
-  if (panels.length > 0) {
-    panels[0].classList.remove("hidden", "opacity-0", "-translate-y-2");
-    panels[0].classList.add("opacity-100", "translate-y-0");
-  }
+  let isTransitioning = false;
 
-  buttons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      // Do nothing if clicking active tab or if currently animating
-      if (btn.classList.contains("tabactive") || isTransitioning) return;
-      
-      isTransitioning = true;
-      const targetId = btn.dataset.tab;
-      const newPanel = document.getElementById(targetId);
-      const currentPanel = getActivePanel();
+  const ACTIVE_BTN_CLASS = "tabactive";
+  const HIDDEN_CLASS = "hidden";
+  const ENTER_CLASSES = ["opacity-100", "translate-y-0"];
+  const EXIT_CLASSES = ["opacity-0", "-translate-y-2"];
 
-      if (!newPanel) {
-        isTransitioning = false;
+  const getActivePanel = () =>
+    document.querySelector(`.borrowvcl-panel:not(.${HIDDEN_CLASS})`);
+
+  const setButtonState = (activeButton) => {
+    buttons.forEach((button) => {
+      const isActive = button === activeButton;
+      button.classList.toggle(ACTIVE_BTN_CLASS, isActive);
+      button.setAttribute("aria-selected", String(isActive));
+    });
+  };
+
+  const showPanel = (panel) => {
+    panel.classList.remove(HIDDEN_CLASS, ...EXIT_CLASSES);
+
+    requestAnimationFrame(() => {
+      panel.classList.add(...ENTER_CLASSES);
+    });
+  };
+
+  const hidePanel = (panel, callback) => {
+    panel.classList.remove(...ENTER_CLASSES);
+    panel.classList.add(...EXIT_CLASSES);
+
+    const handleTransitionEnd = () => {
+      panel.classList.add(HIDDEN_CLASS);
+      panel.removeEventListener("transitionend", handleTransitionEnd);
+      callback?.();
+    };
+
+    panel.addEventListener("transitionend", handleTransitionEnd);
+  };
+
+  // Initialize first tab
+  buttons[0].classList.add(ACTIVE_BTN_CLASS);
+  panels[0].classList.remove(HIDDEN_CLASS, ...EXIT_CLASSES);
+  panels[0].classList.add(...ENTER_CLASSES);
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      if (isTransitioning || button.classList.contains(ACTIVE_BTN_CLASS)) {
         return;
       }
 
-      // 2. Update active button state
-      buttons.forEach((b) => {
-        const isActive = b === btn;
-        b.classList.toggle("tabactive", isActive);
-        b.setAttribute("aria-selected", isActive);
-      });
+      const targetId = button.dataset.tab;
+      const newPanel = document.getElementById(targetId);
+      const currentPanel = getActivePanel();
 
-      // 3. Smooth transition panels (Sequential)
+      if (!newPanel) return;
+
+      isTransitioning = true;
+      setButtonState(button);
+
       if (currentPanel) {
-        // A. Fade out current
-        currentPanel.classList.add("opacity-0", "-translate-y-2");
-        currentPanel.classList.remove("opacity-100", "translate-y-0");
-
-        // B. Wait for fade out, then fade in new
-        currentPanel.addEventListener("transitionend", function handler() {
-          currentPanel.removeEventListener("transitionend", handler);
-          currentPanel.classList.add("hidden");
-
-          // C. Fade in new
-          newPanel.classList.remove("hidden");
-          requestAnimationFrame(() => {
-            newPanel.classList.add("opacity-100", "translate-y-0");
-            newPanel.classList.remove("opacity-0", "-translate-y-2");
-          });
-          
+        hidePanel(currentPanel, () => {
+          showPanel(newPanel);
           isTransitioning = false;
-        }, { once: true });
-      } else {
-        // Direct open if nothing was active
-        newPanel.classList.remove("hidden");
-        requestAnimationFrame(() => {
-          newPanel.classList.add("opacity-100", "translate-y-0");
-          newPanel.classList.remove("opacity-0", "-translate-y-2");
         });
+      } else {
+        showPanel(newPanel);
         isTransitioning = false;
       }
     });

@@ -1,5 +1,5 @@
-// src/components/DrivingImpactSwiper.jsx
 import { useRef } from "react";
+import PropTypes from "prop-types";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -84,3 +84,14 @@ export default function DrivingImpactSwiper({ slides }) {
     </div>
   );
 }
+
+
+DrivingImpactSwiper.propTypes = {
+  slides: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      title: PropTypes.string.isRequired,
+      desc: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};

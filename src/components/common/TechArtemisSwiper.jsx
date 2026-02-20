@@ -12,7 +12,7 @@ export default function TechArtemisSwiper({ slides }) {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
 
-  if (!slides || !slides.length) return null;
+  if (!slides?.length) return null;
 
   return (
     <div className="mx-auto relative w-full py-0">

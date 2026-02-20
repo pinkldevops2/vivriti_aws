@@ -1,10 +1,8 @@
 /* Tailwind v4 Imports */
+/* stylelint-disable at-rule-no-unknown */
 @import "tailwindcss";
 @reference "tailwindcss";
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap');
-
-/* global.css */
 @theme {
   --font-sans: "Inter", sans-serif;
   --font-heading: "Poppins", sans-serif;
@@ -12,7 +10,11 @@
 
 :root {
   --primary-gradient: linear-gradient(32deg, #3BBAE2 0%, #00018A 100%);
+  --speed: 500ms;
+  --gap: 1rem;
+  --width: 220px;
 }
+
 
 body {
   font-size: 16px;
@@ -198,7 +200,6 @@ button {
 .dropdown-toggle {
   width: 100%;
   padding: 9px 16px;
-  background: #ffffff;
   border: none;
   display: flex;
   align-items: center;
@@ -293,13 +294,6 @@ button {
   -webkit-background-clip: unset !important;
   -webkit-text-fill-color: #ffffff !important;
   color: #ffffff !important;
-}
-
-/* Banner Slider */
-:root {
-  --speed: 500ms;
-  --gap: 1rem;
-  --width: 220px;
 }
 
 .item {
@@ -569,13 +563,10 @@ button {
 }
 
 .blog_card.vartical-blog::after {
-  left: initial;
   width: 100%;
   height: 70%;
   background: none;
-  inset: initial;
-  top: 0;
-  left: 0;
+  inset: 0;
 }
 
 .blog_card.vartical-blog:hover::after {

@@ -143,8 +143,9 @@ function validatePhone(input) {
 
 function validateEmail(input) {
   let email = input.value.trim().toLowerCase();
-  // Improved regex for standard email validation
-  const emailRegex = /^[a-z0-9]+([._%+-]?[a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)+$/;
+  
+  // Revised Regex: Simple, linear, and ReDoS-safe
+  const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
 
   if (!email) {
     showError(input, "Email is required");
@@ -156,22 +157,22 @@ function validateEmail(input) {
     return false;
   }
 
+  // Your manual checks are excellent for UX
   if (/\s/.test(email)) {
     showError(input, "Spaces are not allowed");
     return false;
   }
 
   if (email.includes("..")) {
-    showError(input, "Invalid email format");
+    showError(input, "Invalid email format (consecutive dots)");
     return false;
   }
 
   if (!emailRegex.test(email)) {
-    showError(input, "Enter a valid email");
+    showError(input, "Enter a valid email address");
     return false;
   }
 
-  // Sanitize the input field with the trimmed/lowercased version
   input.value = email;
   clearError(input);
   return true;

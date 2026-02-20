@@ -11,14 +11,18 @@ export default function ThinkTankSlider({ posts }) {
 
   // Reading time function
   function getReadingTime(htmlContent, maxChars = 100000) {
-    if (!htmlContent || typeof htmlContent !== 'string') return "1 min read";    
-    const safeContent = htmlContent.slice(0, maxChars);
-    const text = safeContent.replace(/<.*?>/gs, " ").trim();
-    const words = text.split(/\s+/).filter(Boolean).length;    
-    const wordsPerMinute = 200;
-    const minutes = Math.ceil(words / wordsPerMinute) || 1;
-    return `${minutes} min read`;
-}
+      if (!htmlContent || typeof htmlContent !== 'string') return "1 min read";  
+    
+      const safeContent = htmlContent.slice(0, maxChars);
+      const text = safeContent
+          .replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+
+      const words = text.split(/\s+/).filter(Boolean).length;    
+      const wordsPerMinute = 200;
+      const minutes = Math.ceil(words / wordsPerMinute) || 1;
+
+      return `${minutes} min read`;
+  }
 
   if (!posts?.length) return null;
 

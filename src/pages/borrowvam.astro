@@ -6,13 +6,110 @@ import FooterMobile from "../components/common/FooterMobile.astro";
 import TopBanner from '@/components/BorrowVAM/pagebanner.astro';
 import VCLTabs from '@/components/BorrowVAM/VCLTabs.astro';
 import ContactButton from '../components/common/HomeGetInTouch.jsx';
+import { GRAPHQL } from "@/config/graphql";
 
+const query = `
+query {
+  page(id: "borrowvam", idType: URI) {
+    title
+    borrowvam {
+      bannerTitle
+      bannerImage1 {
+        node {
+          sourceUrl
+        }
+      }
+      corporateTitle
+      corporateDescription
+      financialTitle
+      financialDescription
+    }
+  }
+
+  financialProducts(first: 100) {
+    nodes {
+      title
+      slug
+      description
+      tenor
+      segments {
+        nodes {
+          slug
+        }
+      }
+      borrowContexts {
+        nodes {
+          slug
+        }
+      }
+    }
+  }
+}
+
+
+`;
+
+const res = await fetch(GRAPHQL, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ query }),
+});
+
+const data = await res.json();
+const pageData = data?.data?.page?.borrowvam;
+
+if (!pageData) {
+  throw new Error("Borrow VAM page data not found");
+}
+
+const bannerTitle = pageData.bannerTitle;
+const bannerImage = pageData.bannerImage1?.node?.sourceUrl;
+const corporateTitle = pageData.corporateTitle;
+const corporateDescription = pageData.corporateDescription;
+const financialTitle = pageData.financialTitle;
+const financialDescription = pageData.financialDescription;
+
+
+
+if (!data?.data?.financialProducts?.nodes) {
+  throw new Error("Financial products not found");
+}
+
+const allProducts = data.data.financialProducts.nodes;
+
+const filteredProducts = allProducts.filter(item =>
+  item.borrowContexts?.nodes?.some(ctx =>
+    ctx.slug === "borrow-from-vivriti-amc"
+  )
+);
+
+const corporates = filteredProducts.filter(item =>
+  item.segments?.nodes?.some(seg =>
+    seg.slug === "corporates"
+  )
+);
+
+const financials = filteredProducts.filter(item =>
+  item.segments?.nodes?.some(seg =>
+    seg.slug === "financial-institutions"
+  )
+);
 ---
 <Layout>
     <ContactButton label={"Let’s Discuss Your Capital"} href={"/contact-us/?segment=borrow#leadgen"} />
 <Header />
-<TopBanner/>
-<VCLTabs/>
+<TopBanner
+  heading={bannerTitle}
+   
+    image={bannerImage} />
+<VCLTabs
+  corporates={corporates}
+  corporateTitle={corporateTitle}
+   corporateDes={corporateDescription}
+   financialTitle={financialTitle}
+   financialDes={financialDescription}
+  financials={financials}
+/>
 <Footer />
 <FooterMobile/>
 </Layout>

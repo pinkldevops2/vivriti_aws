@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import CookieConsent from "../components/common/CookieConsent.astro";
 const {
   title = "Offering Bespoke Capital Solutions | Vivriti Next",
   description = "We deliver institutional-grade credit, capital, and risk solutions through technology-led lending and investment platforms. Get in touch.",
@@ -33,6 +34,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 		<slot />
+		<CookieConsent />
 	</body>
 </html>
 

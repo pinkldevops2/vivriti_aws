@@ -1,0 +1,150 @@
+---
+import LogoShape from "../../../public/logowhite.svg";
+---
+
+<div class="w-full xl:px-0 md:px-[40px] md:py-[70px] py-[40px] px-[20px]">
+  <div class="container mx-auto">
+    <div class="flex flex-col md:flex-row justify-between md:gap-30">
+      <h2
+        class="text-[28px] md:text-[35px] md:text-4xl font-heading leading-[120%] mb-4 gradient-text w-full md:w-4/12"
+      >
+        Tailored lending solutions for institutional needs
+      </h2>
+      <p data-reveal class="fade-up font-normal text-[17px] w-full md:w-8/12">
+        Vivriti Capital Limited empowers small and mid-sized financial
+        institutions with financing solutions that enhance liquidity, streamline
+        balance sheets, and support sustainable expansion. Our flexible,
+        competitively priced offerings are crafted to meet the specific needs
+        and challenges of today’s financial organizations.
+      </p>
+    </div>
+
+    <div
+      class="flex flex-col md:flex-row w-full items-baseline overflow-hidden"
+    >
+      <div class="flex md:w-2/4 items-start">
+        <div class="pt-8 sm:pt-0">
+          <button
+            class="tab-btn py-3 px-4 text-left text-[14px] text-[#F58220] font-medium active-tab w-full"
+          >
+            Term loan
+          </button>
+          <button
+            class="tab-btn py-3 px-4 text-left text-[14px] text-[#F58220] font-medium w-full"
+          >
+            Securitisation and Direct Assignment
+          </button>
+          <button
+            class="tab-btn py-3 px-4 text-left text-[14px] text-[#F58220] font-medium w-full"
+          >
+            Co-lending
+          </button>
+        </div>
+        <div class="w-full w-full md:block hidden">
+          <img
+            src={LogoShape.src}
+            alt="Vivrithi"
+            class="max-w-[350px] h-auto"
+          />
+        </div>
+      </div>
+
+      <div class="w-full md:w-2/4 p-0 md:p-6">
+        <!------card 1 -->
+        <div
+          class="tab-content opacity-0 -translate-y-4 transition-all duration-500 ease-in-out bg-[#F8F8F8] p-10 border-1 border-dashed border-[#F58220]"
+        >
+          <h2 class="text-[#1B1B1B] text-[17px] font-semibold mb-6">
+            Term Loan
+          </h2>
+          <p data-reveal class="fade-up font-normal w-full mb-8">
+            Secure upfront capital with structured repayments to manage
+            short-term funding, maintain liquidity ratios, or expand operations.
+          </p>
+          <div class="leading-relaxed flex flex-col sm:flex-row mb-4">
+            <p class="text-[#1B1B1B] text-[17px] uppercase min-w-2/6">Tenor:</p>
+
+            <p class="text-[#1B1B1B] text-[17px] font-semibold">
+              3 to 12 months
+            </p>
+          </div>
+        </div>
+
+        <!------card 2 -->
+        <div
+          class="tab-content hidden opacity-0 -translate-y-4 transition-all duration-500 ease-in-out bg-[#F8F8F8] p-10 border-1 border-dashed border-[#F58220]"
+        >
+          <h2 class="text-[#1B1B1B] text-[17px] font-semibold mb-6">
+            Securitisation and Direct Assignment
+          </h2>
+          <p data-reveal class="fade-up font-normal w-full mb-8">
+            Transform receivables into tradable securities via pass-through
+            certificates or direct assignments. Unlock liquidity, reduce risk,
+            and optimise capital at competitive pricing.
+          </p>
+          <div class="leading-relaxed flex flex-col sm:flex-row mb-4">
+            <p class="text-[#1B1B1B] text-[17px] uppercase min-w-2/6">Tenor:</p>
+
+            <p class="text-[#1B1B1B] text-[17px] font-semibold">
+              6 to 60 months
+            </p>
+          </div>
+        </div>
+
+        <!------card 3 -->
+        <div
+          class="tab-content hidden opacity-0 -translate-y-4 transition-all duration-500 ease-in-out bg-[#F8F8F8] p-10 border-1 border-dashed border-[#F58220]"
+        >
+          <h2 class="text-[#1B1B1B] text-[17px] font-semibold mb-6">
+            Co-lending
+          </h2>
+          <p data-reveal class="fade-up font-normal w-full mb-8">
+            Leverage VCL’s co-lending platform to extend large-scale financing
+            with seamless tech integration, offering tailored loan solutions to
+            meet the diverse needs of your customers.
+          </p>
+          <div class="leading-relaxed flex flex-row sm:flex-row mb-4">
+            <p class="text-[#1B1B1B] text-[17px] uppercase min-w-2/6">
+              Loan Types:
+            </p>
+
+            <p class="text-[#1B1B1B] text-[17px] font-semibold">
+              <ul>
+                <li>Business loans</li>
+                <li>Gold loans</li>
+                <li>Microfinance</li>
+                <li>
+                  Vehicle loans (two-wheelers, four-wheelers, and commercial
+                  vehicles)
+                </li>
+                <li>Loans against property</li>
+                <li>Agricultural loans</li>
+              </ul>
+            </p>
+          </div>
+           <div class="leading-relaxed flex flex-col sm:flex-row mb-4">
+            <p class="text-[#1B1B1B] text-[17px] uppercase min-w-2/6">Tenor:</p>
+
+            <p class="text-[#1B1B1B] text-[17px] font-semibold">
+              3 to 42 months
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    button.active-tab {
+      background: linear-gradient(
+        32deg,
+        rgba(0, 1, 138, 1) 0,
+        rgba(59, 186, 226, 1) 100%
+      );
+      letter-spacing: 1px;
+      color: #fff;
+      width: fit-content;
+    }
+  </style>
+  <script type="module" src="/src/scripts/borrowvcl/fintabscopy.js"></script>
+</div>

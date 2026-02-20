@@ -2,6 +2,8 @@
 import LogoShape from "../../../public/Vivrithi_logo.svg";
 import LogoShape1 from "../../../public/logowhite.svg";
 import LogoAnimation from "../../components/common/logoglow.astro";
+const { services = [],Title,Description } = Astro.props;
+
 ---
 
 <div class="w-full xl:px-0 md:px-[0px] md:pt-[70px] pt-[40px]">
@@ -12,13 +14,9 @@ import LogoAnimation from "../../components/common/logoglow.astro";
       <h2
         class="text-[28px] md:text-[35px] md:text-4xl font-heading leading-[120%] mb-4 gradient-text w-full md:w-4/12"
       >
-        Strategise and Scale
+        {Title}  
       </h2>
-      <p data-reveal class="fade-up font-normal text-[17px] w-full md:w-9/12 max-w-[720px] pr-7">
-        At Vivriti Next, we enable mid-market enterprises to turn ambition into
-        measurable growth. From unlocking capital and optimising financial
-        structures to managing risk and embedding sustainability, our solutions
-        are designed to empower every stage of your business.
+      <p data-reveal class="fade-up font-normal text-[17px] w-full md:w-9/12 max-w-[720px] pr-7"set:html={Description}>
       </p>
     </div>
   </div>
@@ -31,215 +29,45 @@ import LogoAnimation from "../../components/common/logoglow.astro";
         <h4 class="uppercase text-[14px] text-[#F58220] mb-4">Services</h4>
         <div class="w-full advisoryaccordion relative z-2">
           <!-- Item 1 — OPEN BY DEFAULT -->
-          <div class="accordion-item accordion-active" id="box-1">
-            <button
-              class="w-full py-3 flex justify-between accordion-header gap-4"
-              data-target="item-1"
-              data-box="box-1"
-            >
-              <h2 class="uppercase text-left">Capital Raise</h2>
-              <h3 class="font-medium text-[#898989] text-right">
-                Connecting enterprises with the right investors
-              </h3>
-            </button>
+              {services.length > 0 ? (
+  services.map((service, index) => (
+    <div key={index}>
+      <div class={`accordion-item ${index === 0 ? "accordion-active" : ""}`} id={`box-${index + 1}`}>
+        <button
+          class="w-full py-3 flex justify-between accordion-header gap-4"
+          data-target={`item-${index + 1}`}
+          data-box={`box-${index + 1}`}
+        >
+          <h2 class="uppercase text-left">{service.title}</h2>
+          <h3 class="font-medium text-[#898989] text-right">{service.subtitle}</h3>
+        </button>
 
-            <div
-              id="item-1"
-              class="overflow-hidden transition-all duration-300"
-              style="max-height: 200px;"
-            >
-              <a
-                data-reveal
-                href="#"
-  data-target-slider="slider-1"
-                class="fade-up contact_cta contact_cta-wwhite contact_cta5 flex items-center gap-2 text-white uppercase hover:text-blue-600 transition mb-4 w-full py-3 px-8 justify-center"
-              >
-                <span data-text="Learn more" class="gradient-text"
-                  >Learn more</span
-                >
-                <img src={LogoShape.src} alt="Vivrithi" class="w-5 h-5" />
-              </a>
-            </div>
-          </div>
-
-          <!-- SEPARATOR -->
-          <div class="border-b border-dashed border-[#F58220] my-2"></div>
-
-          <!-- Item 2 -->
-          <div class="accordion-item" id="box-2">
-            <button
-              class="w-full py-3 flex justify-between accordion-header gap-4"
-              data-target="item-2"
-              data-box="box-2"
-            >
-              <h2 class="uppercase text-right">Capital Markets</h2>
-              <h3 class="font-medium text-[#898989]">
-               Optimising debt access and financing costs
-              </h3>
-            </button>
-
-            <div
-              id="item-2"
-              class="overflow-hidden transition-all duration-300"
-              style="max-height: 0;"
-            >
-              <a
-               href="#"
-  data-target-slider="slider-2"
-                data-reveal
-                class="fade-up contact_cta contact_cta-wwhite contact_cta5 flex items-center gap-2 text-white uppercase hover:text-blue-600 transition mb-4 w-full py-3 px-8 justify-center"
-              >
-                <span data-text="Learn more" class="gradient-text"
-                  >Learn more</span
-                >
-                <img src={LogoShape.src} alt="Vivrithi" class="w-5 h-5" />
-              </a>
-            </div>
-          </div>
-
-          <!-- SEPARATOR -->
-          <div class="border-b border-dashed border-[#F58220] my-2"></div>
-
-          <!-- Item 3 -->
-          <div class="accordion-item" id="box-3">
-            <button
-              class="w-full py-3 flex justify-between accordion-header gap-4"
-              data-target="item-3"
-              data-box="box-3"
-            >
-              <h2 class="uppercase">Capital Structuring</h2>
-              <h3 class="font-medium text-[#898989]">
-                Balancing equity and debt for maximum impact
-              </h3>
-            </button>
-
-            <div
-              id="item-3"
-              class="overflow-hidden transition-all duration-300"
-              style="max-height: 0;"
-            >
-               <a
-                href="#"
-  data-target-slider="slider-3"
-                data-reveal
-                class="fade-up contact_cta contact_cta-wwhite contact_cta5 flex items-center gap-2 text-white uppercase hover:text-blue-600 transition mb-4 w-full py-3 px-8 justify-center"
-              >
-                <span data-text="Learn more" class="gradient-text"
-                  >Learn more</span
-                >
-                <img src={LogoShape.src} alt="Vivrithi" class="w-5 h-5" />
-              </a>
-            </div>
-          </div>
-
-
-           <!-- SEPARATOR -->
-          <div class="border-b border-dashed border-[#F58220] my-2"></div>
-          
-          <!-- Item 4 -->
-          <div class="accordion-item" id="box-4">
-            <button
-              class="w-full py-3 flex justify-between accordion-header gap-4"
-              data-target="item-4"
-              data-box="box-4"
-            >
-              <h2 class="uppercase">Risk Management</h2>
-              <h3 class="font-medium text-[#898989]">
-                Protecting value in a complex business environment
-              </h3>
-            </button>
-
-            <div
-              id="item-4"
-              class="overflow-hidden transition-all duration-300"
-              style="max-height: 0;"
-            >
-               <a
-               href="#"
-  data-target-slider="slider-4"
-                data-reveal
-                class="fade-up contact_cta contact_cta-wwhite contact_cta5 flex items-center gap-2 text-white uppercase hover:text-blue-600 transition mb-4 w-full py-3 px-8 justify-center"
-              >
-                <span data-text="Learn more" class="gradient-text"
-                  >Learn more</span
-                >
-                <img src={LogoShape.src} alt="Vivrithi" class="w-5 h-5" />
-              </a>
-            </div>
-          </div>
-
-                     <!-- SEPARATOR -->
-          <div class="border-b border-dashed border-[#F58220] my-2"></div>
-          
-          <!-- Item 5 -->
-          <div class="accordion-item" id="box-5">
-            <button
-              class="w-full py-3 flex justify-between accordion-header gap-4"
-              data-target="item-5"
-              data-box="box-5"
-            >
-              <h2 class="uppercase">Credit Ratings</h2>
-              <h3 class="font-medium text-[#898989]">
-                Building trust with strategic credit advisory
-              </h3>
-            </button>
-
-            <div
-              id="item-5"
-              class="overflow-hidden transition-all duration-300"
-              style="max-height: 0;"
-            >
-               <a
-                href="#"
-  data-target-slider="slider-5"
-                data-reveal
-                class="fade-up contact_cta contact_cta-wwhite contact_cta5 flex items-center gap-2 text-white uppercase hover:text-blue-600 transition mb-4 w-full py-3 px-8 justify-center"
-              >
-                <span data-text="Learn more" class="gradient-text"
-                  >Learn more</span
-                >
-                <img src={LogoShape.src} alt="Vivrithi" class="w-5 h-5" />
-              </a>
-            </div>
-          </div>
-
-        <!-- SEPARATOR -->
-          <div class="border-b border-dashed border-[#F58220] my-2"></div>
-          
-          <!-- Item 6 -->
-          <div class="accordion-item" id="box-6">
-            <button
-              class="w-full py-3 flex justify-between accordion-header gap-4"
-              data-target="item-6"
-              data-box="box-6"
-            >
-              <h2 class="uppercase">ESG and Climate</h2>
-              <h3 class="font-medium text-[#898989]">
-                Integrating sustainability into business strategy
-              </h3>
-            </button>
-
-            <div
-              id="item-6"
-              class="overflow-hidden transition-all duration-300"
-              style="max-height: 0;"
-            >
-               <a
-                href="#"
-  data-target-slider="slider-6"
-                data-reveal
-                class="fade-up contact_cta contact_cta-wwhite contact_cta5 flex items-center gap-2 text-white uppercase hover:text-blue-600 transition mb-4 w-full py-3 px-8 justify-center"
-              >
-                <span data-text="Learn more" class="gradient-text"
-                  >Learn more</span
-                >
-                <img src={LogoShape.src} alt="Vivrithi" class="w-5 h-5" />
-              </a>
-            </div>
-          </div>
-          
+        <div
+          id={`item-${index + 1}`}
+          class="overflow-hidden transition-all duration-300"
+          style={`max-height: ${index === 0 ? "200px" : "0"}`}
+        >
+          <a
+            data-reveal
+            href="#"
+            data-target-slider={`slider-${index + 1}`}
+            class="fade-up contact_cta contact_cta-wwhite contact_cta5 flex items-center gap-2 text-white uppercase hover:text-blue-600 transition mb-4 w-full py-3 px-8 justify-center"
+          >
+            <span data-text="Learn more" class="gradient-text">Learn more</span>
+            <img src={LogoShape.src} alt="Vivrithi" class="w-5 h-5" />
+          </a>
         </div>
       </div>
+
+      <div class="border-b border-dashed border-[#F58220] my-2"></div>
+    </div>
+  ))
+) : (
+  <p>No services available</p>
+)}
+
+</div>
+    </div>
       <div class="w-full md:w-3/12">
          <div class="w-full md:flex justify-end hidden">
           <LogoAnimation />
@@ -294,4 +122,6 @@ import LogoAnimation from "../../components/common/logoglow.astro";
     }
   }
 </style>
+
+<!-- JS for Toggle -->
 <script type="module" src="/src/scripts/advisory/accordion.js"></script>

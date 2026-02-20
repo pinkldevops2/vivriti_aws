@@ -1,5 +1,7 @@
 ---
 import LogoShape from '../../../public/logovcl.svg';
+const { heading,image } = Astro.props;
+
 ---
 
 <div class="w-full bg-[#F5FBFD] md:flex justify-between relative">
@@ -9,16 +11,15 @@ import LogoShape from '../../../public/logovcl.svg';
       class="milestone-contant w-full sm:w-[40%] ml-auto mr-auto md:ml-0 relative flex flex-col justify-center h-full text-center md:text-left"
     >
       <h2
-        class="text-[28px] md:text-[35px] md:text-4xl font-heading leading-[120%] mb-4 gradient-text py-4 md:py-0"
+        class="text-[28px] md:text-[35px] md:text-4xl font-heading leading-[120%] mb-4 gradient-text py-4 md:py-0" set:html= {heading}
       >
-        Borrow from<br/>
-Vivriti Capital
+      
       </h2>
       <div class="my-5 border-b border-dashed border-[#F58220]"></div>
       <img src={LogoShape.src} alt="Vivrithi" class="w-[250px] h-auto mx-auto md:mx-0" />
     </div>
     <div
-    class="w-full md:w-1/2 shrink-0 bg-[url(/borrowvcl.png)] bg-cover bg-center min-h-[400px] lg:min-w-[674px] object-cover flex items-center flex-col justify-center overflow-hidden items-end p-10 right-0"
+    class="w-full md:w-1/2 shrink-0 bg-cover bg-center min-h-[400px] lg:min-w-[674px] object-cover flex items-center flex-col justify-center overflow-hidden items-end p-10 right-0" style={`background-image: url(${image})`}
   >
   </div>
     </div>

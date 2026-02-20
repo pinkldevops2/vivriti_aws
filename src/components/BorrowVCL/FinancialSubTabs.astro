@@ -1,6 +1,8 @@
 ---
 //import LogoShape from "../../../public/logowhite.svg";
 import LogoAnimation from "../../components/common/logoglow2.astro";
+const { items,title,description  } = Astro.props;
+
 ---
 
 <div class="w-full md:py-[70px] py-[40px]">
@@ -9,73 +11,35 @@ import LogoAnimation from "../../components/common/logoglow2.astro";
     <!-- Heading -->
     <div class="flex flex-col md:flex-row justify-between md:gap-10">
       <h2 class="text-[28px] md:text-[35px] font-heading leading-[120%] mb-4 gradient-text w-full md:w-4/12">
-        Tailored lending solutions for institutional needs
+       {title}
       </h2>
-      <p class="font-normal text-[17px] w-full md:w-8/12 max-w-[674px]">
-       Vivriti Capital empowers small and mid-sized financial institutions with financing solutions that enhance liquidity, streamline balance sheets, and support sustainable expansion. Our flexible, competitively priced offerings are crafted to meet the specific needs and challenges of today’s financial organizations.
+      <p class="font-normal text-[17px] w-full md:w-8/12 max-w-[674px]" set:html={description}>
+      
       </p>
     </div>
 
     <!-- MOBILE ACCORDION -->
     <div class="md:hidden mt-6 space-y-4">
 
+      {items.map((item, index) => (
       <!-- Accordion Item 1 -->
-      <div class="inst-accordion rounded border-dashed border-[#F58220] border">
-        <button class="inst-acc-btn w-full py-4 px-4 flex justify-between items-center text-[#F58220] font-medium text-[16px]">
-          Term Loan
+      <div class="accordion rounded">
+        <button class="acc-btn w-full py-4 px-4 flex justify-between items-center text-[#F58220] font-medium text-[16px]">
+         {item.title}
           <span class="icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="10" viewBox="0 0 16 10" fill="none">
               <path d="M0.707 0.707L7.707 7.707L14.707 0.707" stroke="#666" stroke-width="2"/>
             </svg>
           </span>
         </button>
-        <div class="inst-acc-content p-5 bg-[#F8F8F8]">
-          <p class="mb-4">Secure upfront capital with structured repayments to manage short-term funding, maintain liquidity ratios, or expand operations.</p>
-          <p>Tenor:<strong class="pl-12"> 3 to 12 months</strong></p>
+        <div class="acc-content p-5 bg-[#F8F8F8]">
+          <p class="mb-4" set:html={item.description}></p>
+          <p><strong>Tenor:</strong> {item.tenor}</p>
         </div>
       </div>
-
-      <!-- Accordion Item 2 -->
-      <div class="inst-accordion rounded border-dashed border-[#F58220] border">
-        <button class="inst-acc-btn w-full py-4 px-4 flex justify-between items-center text-[#F58220] font-medium text-[16px] text-left">
-          Securitisation and Direct Assignment
-          <span class="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="10" viewBox="0 0 16 10" fill="none">
-              <path d="M0.707 0.707L7.707 7.707L14.707 0.707" stroke="#666" stroke-width="2"/>
-            </svg>
-          </span>
-        </button>
-        <div class="inst-acc-content p-5 bg-[#F8F8F8]">
-          <p class="mb-4">Transform receivables into tradable securities via pass-through certificates or direct assignments. Unlock liquidity, reduce risk, and optimise capital at competitive pricing.</p>
-          <p>Tenor: <strong class="pl-12">6 to 60 months</strong></p>
-        </div>
-      </div>
-
-      <!-- Accordion Item 3 -->
-      <div class="inst-accordion rounded border-dashed border-[#F58220] border">
-        <button class="inst-acc-btn w-full py-4 px-4 flex justify-between items-center text-[#F58220] font-medium text-[16px]">
-          Co-lending
-          <span class="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="10" viewBox="0 0 16 10" fill="none">
-              <path d="M0.707 0.707L7.707 7.707L14.707 0.707" stroke="#666" stroke-width="2"/>
-            </svg>
-          </span>
-        </button>
-        <div class="inst-acc-content p-5 bg-[#F8F8F8]">
-          <p class="mb-4">Leverage VCL’s co-lending platform to extend large-scale financing with seamless tech integration, offering tailored loan solutions to meet the diverse needs of your customers.
-</p>
-          <p class="font-semibold mb-2">Loan Types:</p>
-          <ul class="list-disc list-inside mb-4">
-            <li>Business loans</li>
-            <li>Gold loans</li>
-            <li>Microfinance</li>
-            <li>Vehicle loans (2W, 4W, commercial)</li>
-            <li>Loans against property</li>
-            <li>Agricultural loans</li>
-          </ul>
-          <p>Tenor: <strong class="pl-12">3 to 42 months</strong></p>
-        </div>
-      </div>
+ ))}
+     
+   
 
     </div>
 
@@ -83,9 +47,15 @@ import LogoAnimation from "../../components/common/logoglow2.astro";
     <div class="hidden md:flex flex-col md:flex-row w-full items-start justify-between mt-10 gap-5">
       <div class="flex md:w-5/12 items-start pl-7">
         <div class="pt-8 sm:pt-0 relative -left-[13px] max-w-[240px] flex flex-col gap-y-2">
-          <button class="inst-tab-btn  py-2 px-7 text-left text-[14px] text-[#F58220] font-medium active-tab block size-fit  uppercase">Term Loan</button>
-          <button class="inst-tab-btn  py-2 px-7 text-left text-[14px] text-[#F58220] font-medium block size-fit uppercase">Securitisation and Direct Assignment</button>
-          <button class="inst-tab-btn  py-2 px-7 text-left text-[14px] text-[#F58220] font-medium block size-fit  uppercase">Co-lending</button>
+           {items.map((item, index) => (
+    <button
+      class={`corporatetab-btn py-2 px-7 text-left text-[14px]  text-[#F58220] font-medium uppercase ${
+        index === 0 ? "active-tab" : ""
+      }`}
+    >
+      {item.title}
+    </button>
+  ))}
         </div>
         <div class="w-full md:flex justify-start hidden ">
           <LogoAnimation />
@@ -94,34 +64,22 @@ import LogoAnimation from "../../components/common/logoglow2.astro";
 
       <div class="w-full flex-1 lg:max-w-[674px] lg:min-w-[674px]">
         <!-- Tab Content 1 -->
-        <div class="inst-tab-content bg-[#F8F8F8] p-10 border-dashed border-[#F58220] border opacity-100 translate-y-0">
-          <h2 class="font-semibold mb-6">Term Loan</h2>
-          <p class="mb-8">Secure upfront capital with structured repayments to manage short-term funding, maintain liquidity ratios, or expand operations.</p>
-          <p><span class="uppercase">Tenor:</span> <strong class="pl-12">3 to 12 months</strong></p>
-        </div>
+         {items.map((item, index) => (
+    <div
+      class={`corporatetab-content bg-[#F8F8F8] p-10 border border-dashed border-[#F58220] ${
+        index === 0 ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4 hidden"
+      }`}
+    >
+      <h2 class="font-semibold mb-6">{item.title}</h2>
+      <p class="mb-8">{item.description}</p>
+      <p>
+        <span class="uppercase">Tenor:</span>
+        <strong class="pl-12">{item.tenor}</strong>
+      </p>
+    </div>
+  ))}
 
-        <!-- Tab Content 2 -->
-        <div class="inst-tab-content hidden opacity-0 -translate-y-4 bg-[#F8F8F8] p-10 border border-dashed border-[#F58220]">
-          <h2 class="font-semibold mb-6">Securitisation and Direct Assignment</h2>
-          <p class="mb-8">Transform receivables into tradable securities via pass-through certificates or direct assignments. Unlock liquidity, reduce risk, and optimise capital at competitive pricing.</p>
-          <p><span class="uppercase">Tenor:</span><strong class="pl-12"> 6 to 60 months</strong></p>
-        </div>
-
-        <!-- Tab Content 3 -->
-        <div class="inst-tab-content hidden opacity-0 -translate-y-4 bg-[#F8F8F8] p-10 border border-dashed border-[#F58220]">
-          <h2 class="font-semibold mb-6">Co-lending</h2>
-          <p class="mb-4">Leverage VCL’s co-lending platform to extend large-scale financing with seamless tech integration, offering tailored loan solutions to meet the diverse needs of your customers.</p>
-          <p class="font-semibold mb-2">Loan Types:</p>
-          <ul class="list-disc list-inside mb-4">
-            <li>Business loans</li>
-            <li>Gold loans</li>
-            <li>Microfinance</li>
-            <li>Vehicle loans (2W, 4W, commercial)</li>
-            <li>Loans against property</li>
-            <li>Agricultural loans</li>
-          </ul>
-          <p><span class="uppercase">Tenor:</span><strong class="pl-12"> 3 to 42 months</strong></p>
-        </div>
+   
 
       </div>
     </div>

@@ -7,13 +7,94 @@ import Banner from '@/components/advisory/banner.astro';
 import AdvisoryAccord from '@/components/advisory/advisoryaccord.astro';
 import AdvisorySlider from '@/components/advisory/advisorySlider.astro';
 import ContactButton from '../components/common/HomeGetInTouch.jsx';
+
+import { GRAPHQL } from '@/config/graphql';
+
+const query = `
+{
+  pageBy(uri: "/advisory") {
+    title
+    advisory {
+      bannerHeading
+      bannerSubheading
+      bannerImage {
+        node {
+          sourceUrl
+        }
+      }
+      title
+      description
+    }
+  }
+
+ advisorySliders(first: 1000) {
+    nodes {
+      title
+      subtitle
+      paragraph1
+      paragraph2
+     featuredImage {
+  node {
+    sourceUrl
+    altText
+  }
+}
+    }
+  }
+}
+
+`;
+
+const res = await fetch(GRAPHQL, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ query }),
+});
+
+const data = await res.json();
+
+if (!data?.data?.pageBy?.advisory) {
+  throw new Error("Advisory page not found");
+}
+
+const advisory = data.data.pageBy.advisory;
+const sliderNodes = data.data.advisorySliders.nodes;
+
+const services = sliderNodes.map((item) => ({
+  title: item.title,
+  subtitle: item.subtitle,
+  paragraph1: item.paragraph1,
+  paragraph2: item.paragraph2,
+  image: item.featuredImage?.node?.sourceUrl || "",
+  alt: item.featuredImage?.node?.altText || "",
+}));
+
+
+
+const advisorySlides = services.map((item) => ({
+  title: item.title.toUpperCase(),
+  paragraphs: [item.paragraph1, item.paragraph2].filter(Boolean),
+  img: item.image,
+  alt: item.alt,
+}));
+
 ---
 <Layout>
 <ContactButton label={"Unlock the Next Step Together"} href={"/contact-us/?segment=advisory#leadgen"} />
 <Header /> 
-<Banner/>
-<AdvisoryAccord/>
-<AdvisorySlider/>
+<Banner
+    heading={advisory.bannerHeading}
+    subHeading={advisory.bannerSubheading}
+    image={advisory.bannerImage?.node?.sourceUrl} />
+
+ 
+  <AdvisoryAccord
+  services={services}
+  Title={advisory.title}
+  Description={advisory.description}
+/>
+
+<AdvisorySlider slides={advisorySlides} />
 <Footer />
 <FooterMobile/>
 </Layout>

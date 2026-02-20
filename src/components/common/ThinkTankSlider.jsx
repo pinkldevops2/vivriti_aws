@@ -10,13 +10,15 @@ export default function ThinkTankSlider({ posts }) {
   const swiperRef = useRef(null);
 
   // Reading time function
-  function getReadingTime(htmlContent) {
-    if (!htmlContent) return "1 min read";
-    const text = htmlContent.replace(/<[^>]*>/g, "").trim();
-    const words = text.split(/\s+/).length;
-    const minutes = Math.max(1, Math.ceil(words / 200));
+  function getReadingTime(htmlContent, maxChars = 100000) {
+    if (!htmlContent || typeof htmlContent !== 'string') return "1 min read";    
+    const safeContent = htmlContent.slice(0, maxChars);
+    const text = safeContent.replace(/<.*?>/gs, " ").trim();
+    const words = text.split(/\s+/).filter(Boolean).length;    
+    const wordsPerMinute = 200;
+    const minutes = Math.ceil(words / wordsPerMinute) || 1;
     return `${minutes} min read`;
-  }
+}
 
   if (!posts?.length) return null;
 

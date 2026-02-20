@@ -3,74 +3,23 @@ import LogoShape from '../../../public/Vivrithi_logo.svg';
 import AdviorySlider from '@/components/common/AdviorySlider';
 
 
-const advioryslides = [
-  {
-    subtitle: "Capital Raise",
-    title: "Connecting enterprises with the right investors",
-    paragraphs: [
-      "For ambitious promoters looking to take their mid-market enterprise to the next level, Vivriti Next bridges the gap between vision and capital. We provide end-to-end support across valuation, investor engagement, deal structuring, and navigating complex capital markets.",
-      "Our approach ensures your business connects with investors who maximise your growth potential and position your enterprise for long-term success."
-    ],
-    img: "/slider1.png"
-  },
-  {
-    subtitle: "Capital MARKETS",
-    title: "Optimising debt access and financing costs",
-    paragraphs: [
-      "At Vivriti Next, we connect mid-market businesses with institutional investors including mutual funds, insurance companies, and alternative investment funds through structured private placements.",
-      "Our approach ensures your bonds and other debt instruments reach a diversified investor base, broadening funding sources, enhancing borrowing capacity, and optimising financing costs. With our strategic guidance, we ensure access to capital efficiently while strengthening financial flexibility and supporting sustainable growth."
-    ],
-    img: "/slider2.png"
-  },
-  {
-    subtitle: "Capital Structuring",
-    title: "Balancing equity and debt for maximum impact",
-    paragraphs: [
-      "Sustainable growth depends on a well-structured capital framework. Vivriti Next provides customised strategies to optimise the mix of equity, debt, and alternative financing, tailored to each client’s sector and unique business context.",
-      "Our team works closely with enterprises to identify the ideal balance that supports expansion, enhances financial efficiency, and builds resilience against market fluctuations. "
-    ],
-    img: "/slider3.png"
-  },
-  {
-    subtitle: "RISK MANAGEMENT",
-    title: "Protecting value in a complex business environment",
-    paragraphs: [
-      "In a landscape of evolving challenges, identifying and managing business risks is essential. Strategic, operational, financial, and cybersecurity risks must be addressed to navigate complexity, ensure compliance, and protect stakeholder value.",
-      "We offer end-to-end risk management support, from risk identification and assessment to strategy development, control implementation, and performance optimisation. "
-    ],
-    img: "/slider4.png"
-  },
-
-  {
-    subtitle: "CREDIT RATINGS",
-    title: "Building trust with strategic credit advisory",
-    paragraphs: [
-      "Credit ratings are critical to accessing funds from banks, financial institutions, and investors.",
-      "Our credit rating advisory services guide mid-market enterprises through the complex procedures of obtaining and maintaining favourable ratings, enabling improved access to capital markets, reduced financing costs, and enhanced credibility among investors and stakeholders."
-    ],
-    img: "/slider5.png"
-  },
-
-  {
-    subtitle: "ESG and Climate ",
-    title: "Integrating sustainability into business strategies",
-    paragraphs: [
-      "<p>ESG is no longer a checkbox - it is central to risk management, resilient growth and capital access.<br/>Our ESG Advisory practice supports financial institutions and enterprises in building robust, proportionate, and market-aligned ESG frameworks that strengthen governance, enhance risk oversight, and improve investor readiness. Designed to be practical and scalable, our solutions are tailored to the size, sector, and growth ambitions of each organization.<br/>What differentiates our approach is that it is practitioner-led. The frameworks, policies, and systems we advise on have been shaped through our own sustainability journey -from building internal ESG foundations to raising ESG and impact-focused capital. We understand first-hand how investors evaluate ESG maturity, and what truly strengthens institutional credibility.</p>",
-      "<p>Our offerings span:</p><ul> <li><span>&middot; ESG strategy and policy design</span></li>  <li><span >&middot; Risk integration and governance strengthening</span></li>  <li><span >&middot; Climate and transition frameworks</span></li>  <li><span>&middot; Impact measurement and reporting</span></li>  <li><span>&middot; ESG rating and investor readiness support</span></li></ul><br/><p>We work with institutions to translate existing strengths into a coherent and credible ESG narrative - one that is embedded into strategy and decision-making, not layered on as compliance.</p><p>Our goal is to build a circle of sustainable champions across the ecosystem -institutions that approach ESG with clarity of intent, operational discipline, and long-term vision</p>"
-    ],
-    img: "/slider6.png"
-  },
-
-];
+const { slides = [] } = Astro.props;
 ---
 
 <div class="w-full xl:px-0 md:px-[0px] md:pt-[0px] pt-[40px] px-[0px] target-section">
   
     <div class="container mx-auto px-0 px-4 xl:px-4 lg:px-8">
-      <div class="border border-dashed border-[#F58220] mb-34 md:mb-30 border-b-0">   
-
-<AdviorySlider slides={advioryslides} client:only="react" />
-
+      <div class="border border-dashed border-[#F58220] mb-34 md:mb-30 border-b-0"> 
+ {slides.length > 0 ? (
+        <AdviorySlider
+          slides={slides}
+          client:only="react"
+        />
+      ) : (
+        <div class="py-12 text-center text-gray-500">
+          <p>No advisory content available at the moment.</p>
+        </div>
+      )}
   </div>
   </div>
   </div>

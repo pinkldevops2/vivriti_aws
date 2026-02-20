@@ -1,59 +1,53 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* -------------------- MOBILE ACCORDION -------------------- */
-  const accordions = document.querySelectorAll(".accordion");
+  /**
+   * Reusable Toggle Function
+   * @param {string} triggerSelector - The buttons/headers to click
+   * @param {string} contentSelector - The target content to show/hide
+   * @param {Function} callback - Custom logic for adding/removing specific classes
+   */
+  const setupToggleUI = (triggerSelector, contentSelector, callback) => {
+    const triggers = document.querySelectorAll(triggerSelector);
+    const contents = document.querySelectorAll(contentSelector);
 
-  accordions.forEach((acc, index) => {
-    const btn = acc.querySelector(".acc-btn");
-    const content = acc.querySelector(".acc-content");
-    const icon = acc.querySelector(".icon");
-
-    // Open first by default
-    if(index === 0) {
-      content.classList.add("open");
-      icon.classList.add("rotate-up");
-    }
-
-    btn.addEventListener("click", () => {
-
-      // Close all others
-      accordions.forEach((other, i) => {
-        if (i !== index) {
-          other.querySelector(".acc-content").classList.remove("open");
-          other.querySelector(".icon").classList.remove("rotate-up");
-        }
+    triggers.forEach((btn, index) => {
+      btn.addEventListener("click", () => {
+        // Handle closing/resetting others
+        triggers.forEach((t, i) => {
+          if (i !== index) callback(triggers[i], contents[i], false);
+        });
+        // Toggle current
+        callback(btn, contents[index], true);
       });
+    });
+  };
 
-      // Toggle current
+  /* -------------------- REFACTORED IMPLEMENTATION -------------------- */
+
+  // 1. Mobile Accordion
+  setupToggleUI(".acc-btn", ".acc-content", (btn, content, isActive) => {
+    const icon = btn.querySelector(".icon"); // specific to accordion
+    if (isActive) {
       content.classList.toggle("open");
-      icon.classList.toggle("rotate-up");
-    });
+      icon?.classList.toggle("rotate-up");
+    } else {
+      content.classList.remove("open");
+      icon?.classList.remove("rotate-up");
+    }
   });
 
-  /* -------------------- DESKTOP TABS -------------------- */
-  const corptabButtons = document.querySelectorAll(".corporatetab-btn");
-  const corptabContents = document.querySelectorAll(".corporatetab-content");
-
-  corptabButtons.forEach((btn, index) => {
-    btn.addEventListener("click", () => {
-
-      corptabButtons.forEach(b => b.classList.remove("active-tab"));
-
-      corptabContents.forEach(c => {
-        c.classList.add("opacity-0", "-translate-y-4");
-        c.classList.add("hidden");
-      });
-
+  // 2. Desktop Tabs
+  setupToggleUI(".corporatetab-btn", ".corporatetab-content", (btn, content, isActive) => {
+    if (isActive) {
       btn.classList.add("active-tab");
-
-      const activeContent = corptabContents[index];
-      activeContent.classList.remove("hidden");
-
-      setTimeout(() => {
-        activeContent.classList.remove("opacity-0", "-translate-y-4");
-        activeContent.classList.add("opacity-100", "translate-y-0");
-      }, 20);
-    });
+      content.classList.remove("hidden");
+      // Use requestAnimationFrame for smoother transitions
+      requestAnimationFrame(() => {
+        content.classList.replace("opacity-0", "opacity-100");
+      });
+    } else {
+      btn.classList.remove("active-tab");
+      content.classList.add("hidden", "opacity-0");
+    }
   });
-
 });

@@ -1,12 +1,14 @@
 ---
 import LogoShape from '../../../public/Vivrithi_logo.svg';
+const { heading, subHeading, image } = Astro.props;
+
 ---
 
-<div class="w-full shrink-0 bg-[url(/advisorybg.png)] bg-cover bg-center min-h-[400px] object-cover flex items-center flex-col justify-center overflow-hidden milstone-overlay relative">
+<div class="w-full shrink-0 bg-cover bg-center min-h-[400px] object-cover flex items-center flex-col justify-center overflow-hidden milstone-overlay relative" style={`background-image: url(${image})`}>
   <div class="container mx-auto">
     <div class="container px-4 xl:px-4 lg:px-8 absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 transform  text-[#fff]">
-        <h1 class="font-heading text-[24px] md:text-[44px] leading-[28px] md:leading-[50px] mb-0 md:mb-3 z-2">Structured advisory <br/>services to navigate the <br/>business complexities</h1>
-<p class="text-[13px] sm:text-[18px] leading-[20px] sm:leading-[28px] z-2">Manage capital with confidence, address risk with <br/>precision, and grow with expert tech.</p>
+        <h1 class="font-heading text-[24px] md:text-[44px] leading-[28px] md:leading-[50px] mb-0 md:mb-3 z-2" set:html={heading}></h1>
+<p class="text-[13px] sm:text-[18px] leading-[20px] sm:leading-[28px] z-2" set:html={subHeading}></p>
 
 
     </div>

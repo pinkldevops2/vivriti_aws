@@ -1,0 +1,106 @@
+<style>
+  .cookie-banner {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(95%, 800px);
+    background: #111;
+    color: #fff;
+    padding: 16px 18px;
+    border-radius: 0px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    display: none;
+    z-index: 9999;
+    font-size: 14px;
+    align-items: center;
+    justify-content: space-between;
+    border-left: 5px solid #3bbae2;
+  }
+
+  .cookie-actions {
+    margin-top: 12px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+
+  .cookie-btn {
+    border: none;
+    padding: 8px 14px;
+    border-radius: 0px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .accept {
+    background: #3bbae2;
+    color: white;
+  }
+
+  .reject {
+    background: #444;
+    color: white;
+  }
+</style>
+
+<div id="cookieBanner" class="cookie-banner">
+  <div>
+    This website uses cookies to enhance functionality and performance. <br/>  
+    Please accept cookies to improve your browsing experience.
+  </div>
+
+  <div class="cookie-actions">
+    <button class="cookie-btn accept" id="acceptCookies">Accept</button>
+    <button class="cookie-btn reject" id="rejectCookies">Reject</button>    
+  </div>
+</div>
+
+<script>
+  const banner = document.getElementById("cookieBanner");
+  const acceptBtn = document.getElementById("acceptCookies");
+  const rejectBtn = document.getElementById("rejectCookies");
+
+  const status = localStorage.getItem("cookieConsent");
+
+  // Show only if not chosen
+  if (!status) {
+    banner.style.display = "flex";
+  }
+
+  function hide() {
+    banner.style.display = "none";
+  }
+
+  acceptBtn.addEventListener("click", () => {
+    localStorage.setItem("cookieConsent", "accepted");
+    hide();
+
+    // 👉 Load analytics or tracking scripts here
+    loadAnalytics();
+  });
+
+  rejectBtn.addEventListener("click", () => {
+    localStorage.setItem("cookieConsent", "rejected");
+    hide();
+  });
+
+  function loadAnalytics() {
+    const script = document.createElement("script");
+    script.src = "https://www.googletagmanager.com/gtag/js?id=GA_ID";
+    script.async = true;
+    document.head.appendChild(script);
+
+    script.onload = () => {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag("js", new Date());
+      gtag("config", "GA_ID");
+    };
+  }
+
+  // If already accepted, load automatically
+  if (status === "accepted") {
+    loadAnalytics();
+  }
+</script>

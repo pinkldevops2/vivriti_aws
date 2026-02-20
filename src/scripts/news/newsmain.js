@@ -22,13 +22,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function getReadingTime(htmlContent) {
-    if (!htmlContent) return "1 min read";
-    const text = htmlContent.replace(/<[^>]*>/g, "").trim();
-    const words = text.split(/\s+/).length;
-    const wordsPerMinute = 200;
-    const minutes = Math.max(1, Math.ceil(words / wordsPerMinute));
-    return `${minutes} min read`;
+function getReadingTime(htmlContent) {
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = htmlContent;
+      
+      const text = tempDiv.textContent || tempDiv.innerText || "";
+      
+      const words = text.trim().split(/\s+/).filter(Boolean).length;
+      const minutes = Math.ceil(words / 200) || 1;
+      
+      return `${minutes} min read`;
   }
 
   // ---------------- CORE LOGIC ----------------

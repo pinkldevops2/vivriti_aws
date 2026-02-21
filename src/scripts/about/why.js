@@ -1,44 +1,60 @@
 document.addEventListener("DOMContentLoaded", () => {
   const cards = document.querySelectorAll(".flip-inner");
   const liItems = document.querySelectorAll(".banner_sub_grid li");
-  let current = 0;
-  let interval;
 
-  // Flip card at given index and adjust height
+  const INTERVAL_TIME = 5000;
+  const DEFAULT_HEIGHT = 250;
+  const HEIGHT_OFFSET = 40;
+
+  if (!cards.length || !liItems.length) return; // safety guard
+
+  let current = 0;
+  let intervalId = null;
+
   const flipCard = (index) => {
-    cards.forEach(card => card.classList.remove("auto-flipped"));
+    if (index < 0 || index >= cards.length) return;
+
+    cards.forEach((card) => card.classList.remove("auto-flipped"));
     cards[index].classList.add("auto-flipped");
 
     liItems.forEach((li, i) => {
       const flipInner = li.querySelector(".flip-inner");
-      if (i === index) {
-        li.style.maxHeight = (flipInner.scrollHeight - 40) + "px"; 
-      } else {
-        li.style.maxHeight = "250px"; // default fallback
-      }
+      if (!flipInner) return;
+
+      li.style.maxHeight =
+        i === index
+          ? `${flipInner.scrollHeight - HEIGHT_OFFSET}px`
+          : `${DEFAULT_HEIGHT}px`;
     });
   };
 
-  // Flip first card on page load
+  const startInterval = () => {
+    stopInterval(); // prevent duplicate timers
+
+    intervalId = setInterval(() => {
+      current = (current + 1) % cards.length;
+      flipCard(current);
+    }, INTERVAL_TIME);
+  };
+
+  const stopInterval = () => {
+    if (intervalId) {
+      clearInterval(intervalId);
+      intervalId = null;
+    }
+  };
+
+  // Init
   flipCard(current);
+  startInterval();
 
-  // Automatic flip every 5 seconds
-  interval = setInterval(() => {
-    current = (current + 1) % cards.length;
-    flipCard(current);
-  }, 5000);
-
-  // Pause auto-flip on hover
+  // Hover behavior
   liItems.forEach((li, i) => {
     li.addEventListener("mouseenter", () => {
-      clearInterval(interval);
-      flipCard(i); // keep hovered card flipped
+      stopInterval();
+      flipCard(i);
     });
-    li.addEventListener("mouseleave", () => {
-      interval = setInterval(() => {
-        current = (current + 1) % cards.length;
-        flipCard(current);
-      }, 5000);
-    });
+
+    li.addEventListener("mouseleave", startInterval);
   });
 });

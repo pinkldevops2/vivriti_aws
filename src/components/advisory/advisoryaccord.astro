@@ -84,44 +84,7 @@ const { services = [],Title,Description } = Astro.props;
 </div>
 
 <style>
-  .accordion-active {
-    color: #fff !important;
-    background: linear-gradient(
-      32deg,
-      rgba(0, 1, 138, 1) 0%,
-      rgba(59, 186, 226, 1) 100%
-    ) !important;
-    position: relative;
-    /* left: -15px;
-    width: calc(100% + 30px); */
-    padding: 0 15px;
-  }
-  .accordion-active .accordion-header{
-    padding-top: 25px;
-     padding-bottom: 25px;
-  }
-  .accordion-active h3{
-    color:#fff;
-  }
-  .contact_cta:hover::before {
-    width: 100%;
-  }
-  .advisoryaccordion .gradient-text{
-    font-size: 14px;
-  }
-  .accordion-item h2{
-    text-align: left;
-  }
-
-    .accordion-item h3{
-    text-align: right;
-  }
-  @media (max-width: 479px) {
-    .accordion-active {
-      padding: 0 15px;
-    }
-  }
+  
 </style>
-
-<!-- JS for Toggle -->
+<link rel="stylesheet" href="/styles/advisory/advisoryaccord.css" />
 <script type="module" src="/scripts/advisory/accordion.js"></script>

@@ -7,8 +7,8 @@ import { GRAPHQL } from "../../config/graphql.js";
 
 export async function getStaticPaths() {
   const query = `
-    query AllNews {
-      news(first: 100) {
+    query AllNewsSlugs {
+      news(first: 1000) {
         nodes {
           slug
         }
@@ -20,28 +20,9 @@ export async function getStaticPaths() {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ query }),
-  const res = await fetch(GRAPHQL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      query: `
-        query AllNewsSlugs {
-          news(first: 1000) {
-            nodes {
-              slug
-            }
-          }
-        }
-      `,
-    }),
   });
 
   const json = await res.json();
-
-  return json.data.news.nodes.map((n) => ({
-    params: { slug: n.slug },
-  }));
-}
 
   if (!json?.data?.news?.nodes) {
     throw new Error("Failed to fetch news slugs from WordPress");

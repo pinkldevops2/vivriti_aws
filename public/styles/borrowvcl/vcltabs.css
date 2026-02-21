@@ -1,0 +1,27 @@
+button:not(.tabactive) {
+    background: linear-gradient(90deg, #00018A, #3BBAE2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: all .3s ease-in-out;
+    }
+  .tabactive {
+    color: #fff !important;
+    background: linear-gradient(
+      32deg,
+      rgba(59, 186, 226, 1) 0%,
+      rgba(0, 1, 138, 1) 100%
+    );
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: initial
+  }
+     button:not(.tabactive):hover {
+    color: #fff !important;
+    background: linear-gradient(
+      32deg,
+      rgba(59, 186, 226, 1) 0%,
+      rgba(0, 1, 138, 1) 100%
+    );
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: initial;
+    cursor: pointer;
+  }

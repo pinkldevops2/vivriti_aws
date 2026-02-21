@@ -1,0 +1,94 @@
+.categories-list ul li a {
+    padding: 15px 10px;
+    position: relative;
+    top: 10px;
+    display: block;
+    background: #f8f7f3;
+    transition: all 0.2s ease-in;
+  }
+
+  .categories-list ul li a:hover {
+    background: #3bbae2;
+    background: linear-gradient(
+      212deg,
+      rgba(59, 186, 226, 1) 0%,
+      rgba(0, 1, 138, 1) 100%
+    );
+    color: #fff;
+    width: 100%;
+  }
+  .categories-list ul li {
+    margin: 20px 0;
+    border-top: 1px dashed #666666;
+  }
+  .blog-container .blog-card {
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+    border-bottom: 1px dashed #f58220;
+  }
+  .blog-container .blog-card:nth-child(odd) {
+    padding-right: 15px;
+  }
+  .blog-container .blog-card:nth-child(even) {
+    padding-left: 15px;
+  }
+  .blog-container .blog-card:nth-last-child(1),
+  .blog-container .blog-card:nth-last-child(2) {
+    border-bottom: initial;
+  }
+  .border-gradent{
+    padding: 5px 12px;
+    border-width: 2px;
+    border-color: transparent;
+  }
+  .border-gradent:hover{
+    border-image: linear-gradient(to right, #00018A 10%, #3BBAE2 100%) 1;
+  border-radius: 0px;
+  border-width: 2px;
+  border-style: solid;
+  }
+  .border-gradent-active{
+    border-image: linear-gradient(to right, #00018A 10%, #3BBAE2 100%) 1;
+  border-radius: 0px;
+  border-width: 2px;
+  border-style: solid;
+  padding: 5px 12px;
+  }
+  @media (max-width: 639px) {
+    .blog-container .blog-card:nth-last-child(2) {
+      border-bottom: 1px dashed #f58220;
+    }
+    .blog-container .blog-card:nth-child(odd) {
+      padding-right: 0px;
+    }
+    .blog-container .blog-card:nth-child(even) {
+      padding-left: 0px;
+    }
+
+
+    #categoriesList {
+    display: none;
+  }
+
+  #categoriesList.active {
+    display: block;
+  }
+ #catAngle , #newsArrow {
+    display: inline-block;
+    transform: rotate(180deg);
+  }
+
+  #catAngle.rotate, #newsArrow.rotate {
+    transform: rotate(360deg);
+  }
+
+  #topNewsList {
+    max-height: 0;
+  }
+
+  #topNewsList.active {
+    max-height: 2000px; 
+  }
+
+  }
+  

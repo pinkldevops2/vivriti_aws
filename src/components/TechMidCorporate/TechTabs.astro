@@ -69,38 +69,5 @@ import CredIQSlider from './credIQSlider.astro';
     </div>
   </div>
 </div>
-<style>
-  button:not(.tabactive) {
-    color:#000;
-    transition: all 0.3s ease-in-out;
-    padding-top: 20px;
-    padding-bottom: 20px;
-  }
-  .tabactive {
-    color: #fff !important;
-  /*   border:0; */
-    padding-top: 40px;
-    padding-bottom: 40px;
-    background: linear-gradient(
-      312deg,
-      rgba(59, 186, 226, 1) 0%,
-      rgba(0, 1, 138, 1) 100%
-    );
-    -webkit-background-clip: initial;
-    -webkit-text-fill-color: initial;
-  }
-  .tabactive p{
-    font-weight: 700;
-  }
-  button:not(.tabactive):hover {
-    color: #fff !important;
-    background: linear-gradient(
-      312deg,
-      rgba(59, 186, 226, 1) 0%,
-      rgba(0, 1, 138, 1) 100%
-    );
-    -webkit-background-clip: initial;
-    -webkit-text-fill-color: initial;
-  }
-</style>
+<link rel="stylesheet" href="/styles/techcommon/techtabs.css" />
 <script type="module" src="/scripts/techcorporate/techtabs.js"></script>

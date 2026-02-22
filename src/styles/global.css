@@ -15,6 +15,11 @@
   --width: 220px;
 }
 
+astro-island,
+astro-slot,
+astro-static-slot {
+  display: contents;
+}
 
 body {
   font-size: 16px;

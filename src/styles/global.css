@@ -989,3 +989,10 @@ button.techtabs-btn:not(.tabactive) {
   height: 248px;
   object-fit: cover;
 }
+
+.tabheadbutton button, .tabheadbutton button:hover{
+  left: 0px!important;
+}
+.midcorporate_btn_group button{
+  padding: 20px 40px;
+}

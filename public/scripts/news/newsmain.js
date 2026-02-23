@@ -243,7 +243,7 @@ function renderPage(page) {
 
   container.innerHTML = list
     .map((item, index) => {
-      const imageUrl = item.featuredImage?.node?.sourceUrl || "/b1.png";
+      const imageUrl = item.featuredImage?.node?.sourceUrl || "/pr.jpg";
       const date = formatDate(item.date);
        const readTime = getReadingTime(item.content);
        const hasCustomLink = !!item.news?.link;
